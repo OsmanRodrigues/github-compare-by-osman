@@ -68,5 +68,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^@root(.*)$": "<rootDir>/src$1",
+      "^@app(.*)$": "<rootDir>/src/app$1"
+    }
   }
 }
