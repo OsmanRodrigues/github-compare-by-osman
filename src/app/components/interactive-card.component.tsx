@@ -1,43 +1,96 @@
 import * as React from 'react'
-import { Repository } from '@entities/repository.model'
+import { ClayButtonWithIcon } from '@clayui/button'
 import ClayCard from '@clayui/card'
 import ClayIcon from '@clayui/icon'
 import ClayLabel from '@clayui/label'
+import { Repository } from '@entities/repository.model'
+import ClayList from '@clayui/list'
 
 interface InteractiveCardProps {
   data: Repository
 }
 
+const InteractiveCardList = ClayList
+InteractiveCardList.defaultProps = { style: { margin: 0 } }
+InteractiveCardList.Item.defaultProps = {
+  style: { padding: '14px 6px' },
+  flex: true
+}
+ClayCard.Caption.defaultProps = { style: { fontSize: 14 } }
+
 export const InteractiveCard: React.FC<InteractiveCardProps> = ({ data }) => {
   const [value, setValue] = React.useState(false)
-  console.log(data)
+  console.log('mod list: ', <InteractiveCardList.Item />)
   return (
     <ClayCard displayType="file">
-      <div className="card-header">
-        <ClayCard.Row style={{ justifyContent: 'space-between' }}>
-          <ClayCard.Description displayType="title">
-            {'deliverable.doc'}
-          </ClayCard.Description>
-          <ClayCard.Description displayType="subtitle">
-            {'Stevie Ray Vaughn'}
-          </ClayCard.Description>
-          <ClayCard.Description displayType="subtitle">
-            {'Stevie Ray Vaughn'}
-          </ClayCard.Description>
-        </ClayCard.Row>
-      </div>
+      <InteractiveCardList>
+        <InteractiveCardList.Item>
+          <InteractiveCardList.ItemField>
+            <InteractiveCardList.ItemTitle>
+              <ClayIcon symbol="repository" />
+            </InteractiveCardList.ItemTitle>
+          </InteractiveCardList.ItemField>
+          <InteractiveCardList.ItemField expand={true}>
+            <InteractiveCardList.ItemTitle>
+              {'repo name'}
+            </InteractiveCardList.ItemTitle>
+          </InteractiveCardList.ItemField>
+          <InteractiveCardList.ItemField>
+            <ClayButtonWithIcon symbol="star-o" displayType="unstyled" />
+          </InteractiveCardList.ItemField>
+          <InteractiveCardList.ItemField>
+            <ClayButtonWithIcon symbol="trash" displayType="unstyled" />
+          </InteractiveCardList.ItemField>
+        </InteractiveCardList.Item>
+      </InteractiveCardList>
       <ClayCard.Body>
+        {/* <InteractiveCardList>
+          {Object.keys(data).map((key, index) => {
+            const value = data[key as keyof Repository]
+
+            return (
+              <InteractiveCardList.Item key={key + value + index}>
+                <InteractiveCardList.ItemField>
+                  <InteractiveCardList.ItemTitle>
+                    {key}
+                  </InteractiveCardList.ItemTitle>
+                </InteractiveCardList.ItemField>
+                <InteractiveCardList.ItemField>
+                  {key}
+                </InteractiveCardList.ItemField>
+              </InteractiveCardList.Item>
+            )
+          })}
+        </InteractiveCardList> */}
         <ClayCard.Row>
           <div className="autofit-col autofit-col-expand">
             <section className="autofit-section">
-              <ClayCard.Description displayType="title">
-                {'deliverable.doc'}
-              </ClayCard.Description>
-              <ClayCard.Description displayType="subtitle">
-                {'Stevie Ray Vaughn'}
-              </ClayCard.Description>
               <ClayCard.Caption>
-                <ClayLabel displayType="warning">{'Approved'}</ClayLabel>
+                <b>{'Stars '}</b>
+                {data.stars}
+              </ClayCard.Caption>
+              <ClayCard.Caption>
+                <b>{'Forks '}</b>
+                {data.forks}
+              </ClayCard.Caption>
+              <ClayCard.Caption>
+                <b>{'Open Issues '}</b>
+                {data.openIssues}
+              </ClayCard.Caption>
+              <ClayCard.Caption>
+                <b>{'Age '}</b>
+                {data.age.toLocaleString()}
+              </ClayCard.Caption>
+              <ClayCard.Caption>
+                <b>{'Last commit '}</b>
+                {data.lastCommit.toLocaleString()}
+              </ClayCard.Caption>
+              <ClayCard.Caption>
+                <b>{'License '}</b>
+                {data.license}
+              </ClayCard.Caption>
+              <ClayCard.Caption>
+                <ClayLabel displayType="warning">{data.tags}</ClayLabel>
               </ClayCard.Caption>
             </section>
           </div>

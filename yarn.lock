@@ -1262,6 +1262,21 @@
   dependencies:
     classnames "^2.2.6"
 
+"@clayui/list@^3.4.7":
+  version "3.4.7"
+  resolved "https://registry.yarnpkg.com/@clayui/list/-/list-3.4.7.tgz#0e600b0a60edab9e6f3fb2b701f6300e9adf3dac"
+  integrity sha512-6ybD0yHRaBcvqkhZ0/as22g28qW6winWAMC5LIB0hJKFzhvn8CGfdCMuHdRf1IZDGHSWkJ3Fv24tZSLALudhDw==
+  dependencies:
+    "@clayui/drop-down" "^3.9.1"
+    "@clayui/form" "^3.14.4"
+    "@clayui/icon" "^3.1.0"
+    "@clayui/label" "^3.4.1"
+    "@clayui/layout" "^3.3.0"
+    "@clayui/link" "^3.2.0"
+    "@clayui/sticker" "^3.3.0"
+    classnames "^2.2.6"
+    warning "^4.0.3"
+
 "@clayui/loading-indicator@3.2.0":
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/@clayui/loading-indicator/-/loading-indicator-3.2.0.tgz#7a5565c5543b345d9e57d8b94b72b7ba83c4667f"
