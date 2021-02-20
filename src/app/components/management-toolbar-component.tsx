@@ -1,12 +1,14 @@
 import * as React from 'react'
 import ClayButton, { ClayButtonWithIcon } from '@clayui/button'
 import { ClayDropDownWithItems } from '@clayui/drop-down'
-import { ClayCheckbox, ClayInput } from '@clayui/form'
+import { ClayInput } from '@clayui/form'
 import ClayIcon from '@clayui/icon'
 import ClayLabel from '@clayui/label'
 import ClayManagementToolbar, {
   ClayResultsBar
 } from '@clayui/management-toolbar'
+import GitHubLogo from '@assets/img/github-logo.svg'
+import ClayLink from '@clayui/link'
 
 export const ManagementToolbarComponent: React.FC = () => {
   const filterItems = [
@@ -39,24 +41,23 @@ export const ManagementToolbarComponent: React.FC = () => {
 
   return (
     <>
-      <ClayManagementToolbar>
+      <ClayManagementToolbar style={{ color: '#6b6c7e' }}>
         <ClayManagementToolbar.ItemList>
           <ClayManagementToolbar.Item>
-            <ClayIcon
-              className="inline-item inline-item-after"
-              symbol="caret-bottom"
-            />
+            <ClayLink href="/" className="nav-link" displayType="unstyled">
+              <img src={GitHubLogo} />
+            </ClayLink>
           </ClayManagementToolbar.Item>
           <ClayManagementToolbar.Item>
-            <h1>Github Compare</h1>
-          </ClayManagementToolbar.Item>
-          <ClayManagementToolbar.Item>
-            <ClayCheckbox
-              checked={false}
-              onChange={() => {
-                console.log('check box clicked')
-              }}
-            />
+            <ClayLink href="/" className="nav-link" displayType="unstyled">
+              <span className="navbar-breakpoint-down-d-none">
+                <b>
+                  <span className="navbar-text-truncate">
+                    {'Github Compare'}
+                  </span>
+                </b>
+              </span>
+            </ClayLink>
           </ClayManagementToolbar.Item>
 
           <ClayDropDownWithItems
@@ -79,18 +80,6 @@ export const ManagementToolbarComponent: React.FC = () => {
               </ClayButton>
             }
           />
-
-          <ClayManagementToolbar.Item>
-            <ClayButton
-              className="nav-link nav-link-monospaced order-arrow-down-active"
-              displayType="unstyled"
-              onClick={() => {
-                console.log('nav link clicked')
-              }}
-            >
-              <ClayIcon symbol="order-arrow" />
-            </ClayButton>
-          </ClayManagementToolbar.Item>
         </ClayManagementToolbar.ItemList>
 
         <ClayManagementToolbar.Search showMobile={searchMobile}>
@@ -138,7 +127,19 @@ export const ManagementToolbarComponent: React.FC = () => {
                 console.log('nav link clicked')
               }}
             >
-              <ClayIcon symbol="info-circle-open" />
+              <ClayIcon symbol="star-o" />
+            </ClayButton>
+          </ClayManagementToolbar.Item>
+
+          <ClayManagementToolbar.Item>
+            <ClayButton
+              className="nav-link nav-link-monospaced"
+              displayType="unstyled"
+              onClick={() => {
+                console.log('nav link clicked')
+              }}
+            >
+              <ClayIcon symbol="adjust" />
             </ClayButton>
           </ClayManagementToolbar.Item>
 
