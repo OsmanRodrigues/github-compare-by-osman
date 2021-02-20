@@ -9,7 +9,7 @@ import ClayManagementToolbar, {
 } from '@clayui/management-toolbar'
 import GitHubLogo from '@assets/img/github-logo.svg'
 import ClayLink from '@clayui/link'
-import { AppPath } from '@shared/app-path'
+import { AppPath } from '../app-path'
 
 const path = AppPath
 
