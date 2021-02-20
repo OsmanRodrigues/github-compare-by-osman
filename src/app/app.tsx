@@ -1,5 +1,5 @@
-import { InteractiveCard, ManagementToolbarComponent } from '@components'
 import * as React from 'react'
+import { InteractiveCard, ManagementToolbarComponent } from '@components'
 
 export const App: React.FC = () => {
   return (
