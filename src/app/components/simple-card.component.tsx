@@ -1,9 +1,14 @@
 import * as React from 'react'
 import { ClayCardWithInfo } from '@clayui/card'
+import { Repository } from '@entities/repository.model'
 
-export const InteractiveCard: React.FC = () => {
+interface InteractiveCardProps {
+  data: Repository
+}
+
+export const InteractiveCard: React.FC<InteractiveCardProps> = ({ data }) => {
   const [value, setValue] = React.useState(false)
-
+  console.log(data)
   return (
     <ClayCardWithInfo
       actions={[
