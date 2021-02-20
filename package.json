@@ -11,12 +11,16 @@
     "@clayui/empty-state": "3.2.0",
     "@clayui/form": "3.14.4",
     "@clayui/icon": "3.1.0",
+    "@clayui/label": "3.4.1",
+    "@clayui/layout": "3.3.0",
+    "@clayui/link": "3.2.0",
+    "@clayui/list": "3.4.7",
     "@clayui/loading-indicator": "3.2.0",
     "@clayui/management-toolbar": "3.3.0",
     "@clayui/modal": "3.8.5",
     "@craco/craco": "6.1.1",
-    "patch-package": "^6.2.2",
-    "postinstall-postinstall": "^2.1.0",
+    "patch-package": "6.2.2",
+    "postinstall-postinstall": "2.1.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-scripts": "4.0.2"
@@ -72,7 +76,10 @@
   "jest": {
     "moduleNameMapper": {
       "^@root(.*)$": "<rootDir>/src$1",
-      "^@app(.*)$": "<rootDir>/src/app$1"
+      "^@app(.*)$": "<rootDir>/src/app$1",
+      "^@assets(.*)$": "<rootDir>/src/assets$1",
+      "^@data(.*)$": "<rootDir>/src/data$1",
+      "^@shared(.*)$": "<rootDir>/src/shared$1"
     }
   }
 }
