@@ -1,2 +1,2 @@
 export * from './management-toolbar-component'
-export * from './simple-card.component'
+export * from './interactive-card.component'

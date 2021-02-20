@@ -20,6 +20,7 @@
     "paths": {
       "@adapters/*": ["adapters/*"],
       "@app/*": ["app/*"],
+      "@assets/*": ["assets/*"],
       "@data": ["data*"],
       "@data/*": ["data/*"],
       "@entities*": ["entities*"],

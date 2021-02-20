@@ -44,7 +44,6 @@ export const ManagementToolbarComponent: React.FC = () => {
           <ClayManagementToolbar.Item>
             <ClayIcon
               className="inline-item inline-item-after"
-              spritemap={'spritemap'}
               symbol="caret-bottom"
             />
           </ClayManagementToolbar.Item>
@@ -62,7 +61,6 @@ export const ManagementToolbarComponent: React.FC = () => {
 
           <ClayDropDownWithItems
             items={filterItems}
-            spritemap={'spritemap'}
             trigger={
               <ClayButton className="nav-link" displayType="unstyled">
                 <span className="navbar-breakpoint-down-d-none">
@@ -72,12 +70,11 @@ export const ManagementToolbarComponent: React.FC = () => {
 
                   <ClayIcon
                     className="inline-item inline-item-after"
-                    spritemap={'spritemap'}
                     symbol="caret-bottom"
                   />
                 </span>
                 <span className="navbar-breakpoint-d-none">
-                  <ClayIcon spritemap={'spritemap'} symbol="filter" />
+                  <ClayIcon symbol="filter" />
                 </span>
               </ClayButton>
             }
@@ -91,7 +88,7 @@ export const ManagementToolbarComponent: React.FC = () => {
                 console.log('nav link clicked')
               }}
             >
-              <ClayIcon spritemap={'spritemap'} symbol="order-arrow" />
+              <ClayIcon symbol="order-arrow" />
             </ClayButton>
           </ClayManagementToolbar.Item>
         </ClayManagementToolbar.ItemList>
@@ -110,12 +107,10 @@ export const ManagementToolbarComponent: React.FC = () => {
                   className="navbar-breakpoint-d-none"
                   displayType="unstyled"
                   onClick={() => setSearchMobile(false)}
-                  spritemap={'spritemap'}
                   symbol="times"
                 />
                 <ClayButtonWithIcon
                   displayType="unstyled"
-                  spritemap={'spritemap'}
                   symbol="search"
                   type="submit"
                 />
@@ -131,7 +126,7 @@ export const ManagementToolbarComponent: React.FC = () => {
               displayType="unstyled"
               onClick={() => setSearchMobile(true)}
             >
-              <ClayIcon spritemap={'spritemap'} symbol="search" />
+              <ClayIcon symbol="search" />
             </ClayButton>
           </ClayManagementToolbar.Item>
 
@@ -143,21 +138,19 @@ export const ManagementToolbarComponent: React.FC = () => {
                 console.log('nav link clicked')
               }}
             >
-              <ClayIcon spritemap={'spritemap'} symbol="info-circle-open" />
+              <ClayIcon symbol="info-circle-open" />
             </ClayButton>
           </ClayManagementToolbar.Item>
 
           <ClayManagementToolbar.Item>
             <ClayDropDownWithItems
               items={viewTypes}
-              spritemap={'spritemap'}
               trigger={
                 <ClayButton
                   className="nav-link-monospaced nav-link"
                   displayType="unstyled"
                 >
                   <ClayIcon
-                    spritemap={'spritemap'}
                     symbol={viewTypeActive ? viewTypeActive.symbolLeft : ''}
                   />
                 </ClayButton>
@@ -168,7 +161,6 @@ export const ManagementToolbarComponent: React.FC = () => {
           <ClayManagementToolbar.Item>
             <ClayButtonWithIcon
               className="nav-btn nav-btn-monospaced"
-              spritemap={'spritemap'}
               symbol="plus"
             />
           </ClayManagementToolbar.Item>
@@ -189,7 +181,6 @@ export const ManagementToolbarComponent: React.FC = () => {
           <ClayLabel
             className="component-label tbar-label"
             displayType="unstyled"
-            spritemap={'spritemap'}
           >
             {'Filter'}
           </ClayLabel>
