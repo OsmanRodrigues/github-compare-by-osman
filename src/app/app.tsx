@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { InteractiveCard, ManagementToolbarComponent } from '@components'
+import { InteractiveCard, ManagementToolbarComponent } from './components'
 import ClayLayout from '@clayui/layout'
 
 const { ContainerFluid, Col, Row } = ClayLayout
