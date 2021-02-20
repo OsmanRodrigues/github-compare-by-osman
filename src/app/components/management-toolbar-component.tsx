@@ -9,6 +9,9 @@ import ClayManagementToolbar, {
 } from '@clayui/management-toolbar'
 import GitHubLogo from '@assets/img/github-logo.svg'
 import ClayLink from '@clayui/link'
+import { AppPath } from '@shared/app-path'
+
+const path = AppPath
 
 export const ManagementToolbarComponent: React.FC = () => {
   const filterItems = [
@@ -44,12 +47,20 @@ export const ManagementToolbarComponent: React.FC = () => {
       <ClayManagementToolbar style={{ color: '#6b6c7e' }}>
         <ClayManagementToolbar.ItemList>
           <ClayManagementToolbar.Item>
-            <ClayLink href="/" className="nav-link" displayType="unstyled">
+            <ClayLink
+              href={path.Base}
+              className="nav-link"
+              displayType="unstyled"
+            >
               <img src={GitHubLogo} />
             </ClayLink>
           </ClayManagementToolbar.Item>
           <ClayManagementToolbar.Item>
-            <ClayLink href="/" className="nav-link" displayType="unstyled">
+            <ClayLink
+              href={path.Base}
+              className="nav-link"
+              displayType="unstyled"
+            >
               <span className="navbar-breakpoint-down-d-none">
                 <b>
                   <span className="navbar-text-truncate">

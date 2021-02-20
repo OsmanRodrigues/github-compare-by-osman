@@ -25,6 +25,7 @@
       "@data/*": ["data/*"],
       "@entities*": ["entities*"],
       "@entities/*": ["entities/*"],
+      "@shared/*": ["shared/*"],
       "@tools/*": ["tools/*"],
       "@use-cases/*": ["use-cases/*"]
     }
