@@ -19,8 +19,8 @@ InteractiveCardList.Item.defaultProps = {
 ClayCard.Caption.defaultProps = { style: { fontSize: 14 } }
 
 export const InteractiveCard: React.FC<InteractiveCardProps> = ({ data }) => {
-  const [value, setValue] = React.useState(false)
-  console.log('mod list: ', <InteractiveCardList.Item />)
+  // const [value, setValue] = React.useState(false)
+
   return (
     <ClayCard displayType="file">
       <InteractiveCardList>
@@ -44,24 +44,6 @@ export const InteractiveCard: React.FC<InteractiveCardProps> = ({ data }) => {
         </InteractiveCardList.Item>
       </InteractiveCardList>
       <ClayCard.Body>
-        {/* <InteractiveCardList>
-          {Object.keys(data).map((key, index) => {
-            const value = data[key as keyof Repository]
-
-            return (
-              <InteractiveCardList.Item key={key + value + index}>
-                <InteractiveCardList.ItemField>
-                  <InteractiveCardList.ItemTitle>
-                    {key}
-                  </InteractiveCardList.ItemTitle>
-                </InteractiveCardList.ItemField>
-                <InteractiveCardList.ItemField>
-                  {key}
-                </InteractiveCardList.ItemField>
-              </InteractiveCardList.Item>
-            )
-          })}
-        </InteractiveCardList> */}
         <ClayCard.Row>
           <div className="autofit-col autofit-col-expand">
             <section className="autofit-section">
