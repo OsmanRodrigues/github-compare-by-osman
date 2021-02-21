@@ -15,9 +15,14 @@ export const repositorySample: Repository = {
 
 export const repositories: Repository[] = [
   repositorySample,
-  { ...repositorySample, id: 'repo2', starred: true },
-  { ...repositorySample, id: 'repo3' },
+  { ...repositorySample, id: 'repo2', starred: true, name: 'liferay-business' },
+  { ...repositorySample, id: 'repo3', name: 'liferay-community' },
   { ...repositorySample, id: 'repo4', starred: true },
-  { ...repositorySample, id: 'repo5' },
-  { ...repositorySample, id: 'repo6', starred: true }
+  { ...repositorySample, id: 'repo5', name: 'liferay-design' },
+  {
+    ...repositorySample,
+    id: 'repo6',
+    starred: true,
+    name: 'liferay-development'
+  }
 ]

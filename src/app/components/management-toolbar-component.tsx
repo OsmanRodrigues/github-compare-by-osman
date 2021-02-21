@@ -10,10 +10,15 @@ import ClayManagementToolbar, {
 import GitHubLogo from '@assets/img/github-logo.svg'
 import ClayLink from '@clayui/link'
 import { AppPath } from '../app-path'
+import { ManagementToolbarComponentProps } from '@app/models/management-toolbar.model'
 
 const path = AppPath
 
-export const ManagementToolbarComponent: React.FC = () => {
+export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProps> = ({
+  onSearchSubmit,
+  onSearchTyping,
+  searchValue
+}) => {
   const filterItems = [
     { label: 'Filter Action 1', onClick: () => alert('Filter clicked') },
     { label: 'Filter Action 2', onClick: () => alert('Filter clicked') }
@@ -41,7 +46,6 @@ export const ManagementToolbarComponent: React.FC = () => {
   const [searchMobile, setSearchMobile] = React.useState(false)
 
   const viewTypeActive = viewTypes.find(type => type.active)
-
   return (
     <>
       <ClayManagementToolbar style={{ color: '#6b6c7e' }}>
@@ -97,10 +101,25 @@ export const ManagementToolbarComponent: React.FC = () => {
           <ClayInput.Group>
             <ClayInput.GroupItem>
               <ClayInput
+                placeholder="Search"
                 aria-label="Search"
                 className="form-control input-group-inset input-group-inset-after"
-                defaultValue="Red"
                 type="text"
+                onKeyDown={event => {
+                  if (event.key.length === 1) {
+                    onSearchSubmit(searchValue + event.key)
+                  } else if (event.key === 'Backspace') {
+                    const previousValue = searchValue.substring(
+                      0,
+                      searchValue.length - 1
+                    )
+                    onSearchSubmit(previousValue)
+                  } else if (event.key === 'Enter') {
+                    event.preventDefault()
+                  }
+                }}
+                value={searchValue}
+                onChange={onSearchTyping}
               />
               <ClayInput.GroupInsetItem after tag="span">
                 <ClayButtonWithIcon
@@ -113,6 +132,10 @@ export const ManagementToolbarComponent: React.FC = () => {
                   displayType="unstyled"
                   symbol="search"
                   type="submit"
+                  onClick={event => {
+                    event.preventDefault()
+                    onSearchSubmit(searchValue)
+                  }}
                 />
               </ClayInput.GroupInsetItem>
             </ClayInput.GroupItem>

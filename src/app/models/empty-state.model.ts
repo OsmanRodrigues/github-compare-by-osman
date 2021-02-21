@@ -1,6 +1,6 @@
 export interface EmptyState {
   isEmpty: boolean
-  type: 'no-data' | 'search-result' | null
+  type: 'no-data' | 'not-found' | null
 }
 
 export interface EmptyStateProps {

@@ -18,7 +18,8 @@ const { ContainerFluid, Col, Row } = ClayLayout
 const strings = AppStrings
 
 export const App: React.FC = () => {
-  const [repositories, setRepositories] = React.useState(mockedRepositories)
+  const mainRepositories = mockedRepositories
+  const [repositories, setRepositories] = React.useState(mainRepositories)
   const [
     currentActionRepository,
     setCurrentActionRepository
@@ -29,15 +30,21 @@ export const App: React.FC = () => {
     onClose: () => setModalVisible(false)
   })
 
-  const [emptyState, setEmptyState] = React.useState<EmptyState>({
+  const initialEmptyState: EmptyState = {
     isEmpty: !repositories?.length,
     type: !repositories?.length ? 'no-data' : null
-  })
+  }
+
+  const [emptyState, setEmptyState] = React.useState<EmptyState>(
+    initialEmptyState
+  )
 
   const emptyStateProps: EmptyStateProps =
     emptyState.type === 'no-data'
       ? { ...strings.EmptyState.NoData }
       : { ...strings.EmptyState.NotFound }
+
+  const [searchValue, setSearchValue] = React.useState('')
 
   const handleOnOpenModal: RepositoryHandler = repository => {
     setCurrentActionRepository(repository)
@@ -74,9 +81,29 @@ export const App: React.FC = () => {
     }
   }
 
+  const handleOnSearchTyping = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(event.currentTarget.value)
+  }
+
+  const handleOnSearchSubmit = (searchString: string) => {
+    const filteredRepositories = mainRepositories.filter(repository =>
+      String(`${repository.owner}/${repository.name}`).includes(searchString)
+    )
+    if (!filteredRepositories.length) {
+      setEmptyState({ isEmpty: true, type: 'not-found' })
+    } else {
+      setRepositories(filteredRepositories)
+      setEmptyState({ isEmpty: false, type: null })
+    }
+    setRepositories(filteredRepositories)
+  }
   return (
     <>
-      <ManagementToolbarComponent />
+      <ManagementToolbarComponent
+        searchValue={searchValue}
+        onSearchTyping={handleOnSearchTyping}
+        onSearchSubmit={handleOnSearchSubmit}
+      />
       <ContainerFluid view={true}>
         <Row justify="start">
           {emptyState.isEmpty && <ClayEmptyState {...emptyStateProps} />}
