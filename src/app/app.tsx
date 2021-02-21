@@ -23,10 +23,16 @@ export const App: React.FC = () => {
   const [repositories, setRepositories] = React.useState(
     repositoriesRef.current
   )
-  const [
-    currentActionRepository,
-    setCurrentActionRepository
-  ] = React.useState<Repository>()
+  const [newRepositoryNotFound, setNewRepositoryNotFound] = React.useState(
+    false
+  )
+  const [currentActionRepository, setCurrentActionRepository] = React.useState<{
+    repository: Repository | undefined
+    actionState?: string
+  }>({
+    repository: undefined,
+    actionState: ''
+  })
 
   const [modalVisble, setModalVisible] = React.useState(false)
   const { observer: modalObserver, onClose } = useModal({
@@ -50,7 +56,7 @@ export const App: React.FC = () => {
   const [searchValue, setSearchValue] = React.useState('')
 
   const handleOnOpenModal: RepositoryHandler = repository => {
-    setCurrentActionRepository(repository)
+    setCurrentActionRepository({ repository })
     setModalVisible(true)
   }
 
@@ -154,15 +160,33 @@ export const App: React.FC = () => {
     }
   }
 
+  const handleOnAddRepository = (newRepositoryName: string) => {
+    setNewRepositoryNotFound(false)
+    if (newRepositoryName) {
+      const repositoriesCopy = repositories
+      const newRepository = mockedRepositories.find(repository =>
+        repository.name.includes(newRepositoryName)
+      )
+
+      if (newRepository) {
+        setRepositories([newRepository, ...repositoriesCopy])
+      } else {
+        setNewRepositoryNotFound(true)
+      }
+    }
+  }
+
   return (
     <>
       <ManagementToolbarComponent
         searchValue={searchValue}
+        newRepositoryNotFound={newRepositoryNotFound}
+        onAddRepository={handleOnAddRepository}
         onSearchTyping={handleOnSearchTyping}
         onSearchSubmit={handleOnSearchSubmit}
         onFilterSubmit={handleOnFilterSubmit}
         onFilterClear={handleOnFilterClear}
-        showStarredOnly={handleOnShowStarredOnly}
+        onShowStarredOnly={handleOnShowStarredOnly}
       />
       <ContainerFluid view={true}>
         <Row justify="start">
@@ -184,12 +208,12 @@ export const App: React.FC = () => {
         observer={modalObserver}
         closeModalHandler={onClose}
         confirmActionModalHandler={() =>
-          handleOnDeleteRepository(currentActionRepository)
+          handleOnDeleteRepository(currentActionRepository.repository)
         }
       >
         <p>
           Are you sure to delete the
-          <b>{` ${currentActionRepository?.name} `}</b>
+          <b>{` ${currentActionRepository.repository?.name} `}</b>
           repository?
         </p>
       </Modal>

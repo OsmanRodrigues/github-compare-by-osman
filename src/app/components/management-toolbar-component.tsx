@@ -1,7 +1,7 @@
 import * as React from 'react'
 import ClayButton, { ClayButtonWithIcon } from '@clayui/button'
 import { ClayDropDownWithItems } from '@clayui/drop-down'
-import { ClayInput } from '@clayui/form'
+import ClayForm, { ClayInput } from '@clayui/form'
 import ClayIcon from '@clayui/icon'
 import ClayManagementToolbar, {
   ClayResultsBar
@@ -14,16 +14,19 @@ import {
   ManagementToolbarComponentProps
 } from '../models/management-toolbar.model'
 import { RepositoryProperties } from '@entities/repository.model'
+import ClayPopover from '@clayui/popover'
 
 const path = AppPath
 
 export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProps> = ({
+  searchValue,
+  newRepositoryNotFound,
+  onAddRepository,
   onSearchSubmit,
   onSearchTyping,
   onFilterSubmit,
   onFilterClear,
-  searchValue,
-  showStarredOnly
+  onShowStarredOnly
 }) => {
   const [filterParam, setFilterParam] = React.useState<RepositoryProperties>()
   const filterItems: FilterItem[] = Object.keys(RepositoryProperties).map(
@@ -63,6 +66,11 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
   const [searchMobile, setSearchMobile] = React.useState(false)
 
   const viewTypeActive = viewTypes.find(type => type.active)
+
+  const [showAddForm, setShowAddForm] = React.useState(false)
+  const [newRepositoryName, setNewRepositoryName] = React.useState('')
+  const showNewRepositoryFormFeedback = newRepositoryNotFound
+
   return (
     <>
       <ClayManagementToolbar style={{ color: '#6b6c7e' }}>
@@ -181,10 +189,10 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
               onClick={() => {
                 if (showingStarredOnly) {
                   setFilterParam(undefined)
-                  showStarredOnly(showingStarredOnly)
+                  onShowStarredOnly(showingStarredOnly)
                 } else {
                   setFilterParam(RepositoryProperties.Starred)
-                  showStarredOnly(showingStarredOnly)
+                  onShowStarredOnly(showingStarredOnly)
                 }
               }}
             >
@@ -221,10 +229,75 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
           </ClayManagementToolbar.Item>
 
           <ClayManagementToolbar.Item>
-            <ClayButtonWithIcon
-              className="nav-btn nav-btn-monospaced"
-              symbol="plus"
-            />
+            <ClayPopover
+              show={showAddForm}
+              trigger={
+                <ClayButtonWithIcon
+                  onClick={() => setShowAddForm(true)}
+                  className="nav-btn nav-btn-monospaced"
+                  symbol="plus"
+                />
+              }
+              onShowChange={show => setShowAddForm(show)}
+              alignPosition="bottom-right"
+              disableScroll={true}
+            >
+              <h3>New repository</h3>
+              <ClayForm
+                onSubmit={event => {
+                  event.preventDefault()
+                  onAddRepository(newRepositoryName)
+                }}
+                id="newRepositoryForm"
+              >
+                <ClayForm.Group
+                  className={showNewRepositoryFormFeedback ? 'has-error' : ''}
+                >
+                  <label htmlFor="newRepositoryName">
+                    {'Repository '}
+                    <span style={{ color: '#DA1414' }}>{'*'}</span>
+                  </label>
+                  <ClayInput
+                    value={newRepositoryName}
+                    onChange={event => setNewRepositoryName(event.target.value)}
+                    id="newRepositoryName"
+                    type="text"
+                    required={true}
+                    onKeyDown={event => {
+                      if (newRepositoryNotFound && event.key === 'Backspace') {
+                        onAddRepository('')
+                      }
+                    }}
+                  />
+                  {showNewRepositoryFormFeedback && (
+                    <ClayForm.FeedbackGroup>
+                      <ClayForm.FeedbackItem>
+                        <ClayForm.FeedbackIndicator symbol="exclamation-full" />
+                        {'Repository not found.'}
+                      </ClayForm.FeedbackItem>
+                    </ClayForm.FeedbackGroup>
+                  )}
+                </ClayForm.Group>
+                <ClayForm.Group>
+                  <ClayButton.Group spaced={true}>
+                    <ClayButton
+                      onClick={() => setShowAddForm(false)}
+                      displayType="secondary"
+                    >
+                      {'Cancel'}
+                    </ClayButton>
+                    <ClayButton
+                      form="newRepositoryForm"
+                      value="Submit"
+                      type="submit"
+                      displayType="primary"
+                    >
+                      {'Add'}
+                    </ClayButton>
+                  </ClayButton.Group>
+                </ClayForm.Group>
+              </ClayForm>
+            </ClayPopover>
           </ClayManagementToolbar.Item>
         </ClayManagementToolbar.ItemList>
       </ClayManagementToolbar>
