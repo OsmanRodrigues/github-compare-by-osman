@@ -8,6 +8,7 @@ import ClayList from '@clayui/list'
 
 interface InteractiveCardProps {
   data: Repository
+  repositoryDeleteHandler: () => void
 }
 
 const InteractiveCardList = ClayList
@@ -18,7 +19,10 @@ InteractiveCardList.Item.defaultProps = {
 }
 ClayCard.Caption.defaultProps = { style: { fontSize: 14 } }
 
-export const InteractiveCard: React.FC<InteractiveCardProps> = ({ data }) => {
+export const InteractiveCard: React.FC<InteractiveCardProps> = ({
+  data,
+  repositoryDeleteHandler
+}) => {
   // const [value, setValue] = React.useState(false)
 
   return (
@@ -32,14 +36,18 @@ export const InteractiveCard: React.FC<InteractiveCardProps> = ({ data }) => {
           </InteractiveCardList.ItemField>
           <InteractiveCardList.ItemField expand={true}>
             <InteractiveCardList.ItemTitle>
-              {'repo name'}
+              {`${data.owner}/${data.name}`}
             </InteractiveCardList.ItemTitle>
           </InteractiveCardList.ItemField>
           <InteractiveCardList.ItemField>
             <ClayButtonWithIcon symbol="star-o" displayType="unstyled" />
           </InteractiveCardList.ItemField>
           <InteractiveCardList.ItemField>
-            <ClayButtonWithIcon symbol="trash" displayType="unstyled" />
+            <ClayButtonWithIcon
+              onClick={repositoryDeleteHandler}
+              symbol="trash"
+              displayType="unstyled"
+            />
           </InteractiveCardList.ItemField>
         </InteractiveCardList.Item>
       </InteractiveCardList>

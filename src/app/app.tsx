@@ -1,16 +1,17 @@
 import * as React from 'react'
-import { InteractiveCard, ManagementToolbarComponent } from './components'
 import ClayLayout from '@clayui/layout'
-// import { repositories } from '@data/mocks'
 import ClayEmptyState from '@clayui/empty-state'
-import NoData from '@assets/img/no-data-empty-state.gif'
-import NotFound from '@assets/img/not-found-empty-state.png'
-import { Repository } from '@entities/repository.model'
+import {
+  InteractiveCard,
+  ManagementToolbarComponent,
+  Modal
+} from './components'
+import { repositories as mockedRepositories } from '@data/mocks'
 import { AppStrings } from './app-strings'
+import { useModal } from '@clayui/modal'
+import { Repository } from '@entities/repository.model'
 
 const { ContainerFluid, Col, Row } = ClayLayout
-
-const repositories: Repository[] = []
 
 interface EmptyState {
   isEmpty: boolean
@@ -20,15 +21,43 @@ interface EmptyState {
 const strings = AppStrings
 
 export const App: React.FC = () => {
+  const [repositories, setRepositories] = React.useState(mockedRepositories)
+  const [
+    currentActionRepository,
+    setCurrentActionRepository
+  ] = React.useState<Repository>()
+
+  const [modalVisble, setModalVisible] = React.useState(false)
+  const { observer: modalObserver, onClose } = useModal({
+    onClose: () => setModalVisible(false)
+  })
+
   const [emptyState, setEmptyState] = React.useState<EmptyState>({
     isEmpty: !repositories?.length,
-    type: 'search-result' //! repositories?.length ? 'no-data' : null
+    type: !repositories?.length ? 'no-data' : null
   })
 
   const emptyStateProps =
     emptyState.type === 'no-data'
       ? { ...strings.EmptyState.NoData }
       : { ...strings.EmptyState.NotFound }
+
+  const handleOnOpenModal = (repository: Repository) => {
+    setCurrentActionRepository(repository)
+    setModalVisible(true)
+  }
+
+  const handleOnDeleteRepository = (repository?: Repository) => {
+    if (repository) {
+      const currentRepositories = repositories
+
+      setRepositories(
+        currentRepositories.filter(
+          currentRepository => currentRepository.id !== repository.id
+        )
+      )
+    }
+  }
 
   return (
     <>
@@ -37,13 +66,29 @@ export const App: React.FC = () => {
         <Row justify="start">
           {emptyState.isEmpty && <ClayEmptyState {...emptyStateProps} />}
           {!emptyState.isEmpty &&
-            repositories.map((repository, index) => (
-              <Col xs={12} sm={6} md={6} lg={4} key={repository?.name + index}>
-                <InteractiveCard data={repository} />
+            repositories.map(repository => (
+              <Col xs={12} sm={6} md={6} lg={4} key={repository.id}>
+                <InteractiveCard
+                  repositoryDeleteHandler={() => handleOnOpenModal(repository)}
+                  data={repository}
+                />
               </Col>
             ))}
         </Row>
       </ContainerFluid>
+      <Modal
+        visible={modalVisble}
+        observer={modalObserver}
+        closeModalHandler={onClose}
+        confirmActionModalHandler={() =>
+          handleOnDeleteRepository(currentActionRepository)
+        }
+      >
+        <p>
+          Are you sure to delete the <b>{currentActionRepository?.name}</b>{' '}
+          repository?
+        </p>
+      </Modal>
     </>
   )
 }
