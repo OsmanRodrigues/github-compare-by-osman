@@ -7,6 +7,7 @@ import ClayManagementToolbar, {
   ClayResultsBar
 } from '@clayui/management-toolbar'
 import ClayLink from '@clayui/link'
+import ClayPopover from '@clayui/popover'
 import GitHubLogo from '@assets/img/github-logo.svg'
 import { AppPath } from '../app-path'
 import {
@@ -14,7 +15,6 @@ import {
   ManagementToolbarComponentProps
 } from '../models/management-toolbar.model'
 import { RepositoryProperties } from '@entities/repository.model'
-import ClayPopover from '@clayui/popover'
 
 const path = AppPath
 
