@@ -1303,7 +1303,7 @@
     classnames "^2.2.6"
     warning "^4.0.3"
 
-"@clayui/popover@^3.5.5":
+"@clayui/popover@3.5.5":
   version "3.5.5"
   resolved "https://registry.yarnpkg.com/@clayui/popover/-/popover-3.5.5.tgz#70062e7f09ea53e458d6ff56c173586c150988ff"
   integrity sha512-IywMQ/pSP1fqqcRbvrKWxT7j9KeZ2eUOm31K1HMECKNCyNsGIpk9qQyjYmARYCl3d3E5yYjx8fMHZ7nfmNmWow==

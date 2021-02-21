@@ -43,7 +43,11 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
       }
     }
   )
-  const showingStarredOnly = filterParam === RepositoryProperties.Starred
+  const showStarredOnly = filterParam === RepositoryProperties.Starred
+  const [showAddForm, setShowAddForm] = React.useState(false)
+  const [newRepositoryName, setNewRepositoryName] = React.useState('')
+  const showNewRepositoryFormFeedback = newRepositoryNotFound
+
   const viewTypes = [
     {
       label: 'List',
@@ -51,12 +55,12 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
       symbolLeft: 'list'
     },
     {
-      active: true,
       label: 'Table',
       onClick: () => alert('Show view table'),
       symbolLeft: 'table'
     },
     {
+      active: true,
       label: 'Card',
       onClick: () => alert('Show view card'),
       symbolLeft: 'cards2'
@@ -66,10 +70,6 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
   const [searchMobile, setSearchMobile] = React.useState(false)
 
   const viewTypeActive = viewTypes.find(type => type.active)
-
-  const [showAddForm, setShowAddForm] = React.useState(false)
-  const [newRepositoryName, setNewRepositoryName] = React.useState('')
-  const showNewRepositoryFormFeedback = newRepositoryNotFound
 
   return (
     <>
@@ -187,16 +187,16 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
               className="nav-link nav-link-monospaced"
               displayType="unstyled"
               onClick={() => {
-                if (showingStarredOnly) {
+                if (showStarredOnly) {
                   setFilterParam(undefined)
-                  onShowStarredOnly(showingStarredOnly)
+                  onShowStarredOnly(showStarredOnly)
                 } else {
                   setFilterParam(RepositoryProperties.Starred)
-                  onShowStarredOnly(showingStarredOnly)
+                  onShowStarredOnly(showStarredOnly)
                 }
               }}
             >
-              <ClayIcon symbol={showingStarredOnly ? 'star' : 'star-o'} />
+              <ClayIcon symbol={showStarredOnly ? 'star' : 'star-o'} />
             </ClayButton>
           </ClayManagementToolbar.Item>
 
@@ -307,7 +307,7 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
           <ClayResultsBar.Item>
             <span className="component-text text-truncate-inline">
               <span className="text-truncate">
-                {showingStarredOnly ? 'Showing ' : 'Ordering by '}
+                {showStarredOnly ? 'Showing ' : 'Ordering by '}
                 <strong>{filterParam}</strong>
               </span>
             </span>
