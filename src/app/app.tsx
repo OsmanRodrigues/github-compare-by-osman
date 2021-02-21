@@ -13,6 +13,8 @@ import { AppStrings } from './app-strings'
 import { EmptyState, EmptyStateProps } from './models/empty-state.model'
 import { RepositoryHandler } from './models/repository-handler'
 import { ShowStarredOnlyHandler } from './models/management-toolbar.model'
+import { useQuery } from '@apollo/client'
+import { RepositoryInfosQuery } from '@data/query/repository-infos.query'
 
 const { ContainerFluid, Col, Row } = ClayLayout
 

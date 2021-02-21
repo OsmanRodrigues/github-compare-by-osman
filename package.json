@@ -20,6 +20,7 @@
     "@clayui/modal": "3.8.5",
     "@clayui/popover": "3.5.5",
     "@craco/craco": "6.1.1",
+    "graphql": "^15.5.0",
     "patch-package": "6.2.2",
     "postinstall-postinstall": "2.1.0",
     "react": "17.0.1",
@@ -77,6 +78,7 @@
   "jest": {
     "moduleNameMapper": {
       "^@root(.*)$": "<rootDir>/src$1",
+      "^@adapters(.*)$": "<rootDir>/src/adapters$1",
       "^@app(.*)$": "<rootDir>/src/app$1",
       "^@assets(.*)$": "<rootDir>/src/assets$1",
       "^@data(.*)$": "<rootDir>/src/data$1",
