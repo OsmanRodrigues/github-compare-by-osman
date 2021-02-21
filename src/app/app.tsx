@@ -1,22 +1,18 @@
 import * as React from 'react'
 import ClayLayout from '@clayui/layout'
 import ClayEmptyState from '@clayui/empty-state'
+import { useModal } from '@clayui/modal'
 import {
   InteractiveCard,
   ManagementToolbarComponent,
   Modal
 } from './components'
 import { repositories as mockedRepositories } from '@data/mocks'
-import { AppStrings } from './app-strings'
-import { useModal } from '@clayui/modal'
 import { Repository } from '@entities/repository.model'
+import { AppStrings } from './app-strings'
+import { EmptyState, EmptyStateProps } from './models/empty-state.model'
 
 const { ContainerFluid, Col, Row } = ClayLayout
-
-interface EmptyState {
-  isEmpty: boolean
-  type: 'no-data' | 'search-result' | null
-}
 
 const strings = AppStrings
 
@@ -37,7 +33,7 @@ export const App: React.FC = () => {
     type: !repositories?.length ? 'no-data' : null
   })
 
-  const emptyStateProps =
+  const emptyStateProps: EmptyStateProps =
     emptyState.type === 'no-data'
       ? { ...strings.EmptyState.NoData }
       : { ...strings.EmptyState.NotFound }

@@ -1,13 +1,6 @@
 import NoData from '@assets/img/no-data-empty-state.gif'
 import NotFound from '@assets/img/not-found-empty-state.png'
 
-interface EmptyStateProps {
-  description: string
-  imgProps: { alt: string; title: string }
-  imgSrc: string
-  title: string
-}
-
 export const AppStrings = {
   EmptyState: {
     NoData: <EmptyStateProps>{
