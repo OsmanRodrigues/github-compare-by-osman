@@ -3,26 +3,42 @@ import ClayButton, { ClayButtonWithIcon } from '@clayui/button'
 import { ClayDropDownWithItems } from '@clayui/drop-down'
 import { ClayInput } from '@clayui/form'
 import ClayIcon from '@clayui/icon'
-import ClayLabel from '@clayui/label'
 import ClayManagementToolbar, {
   ClayResultsBar
 } from '@clayui/management-toolbar'
-import GitHubLogo from '@assets/img/github-logo.svg'
 import ClayLink from '@clayui/link'
+import GitHubLogo from '@assets/img/github-logo.svg'
 import { AppPath } from '../app-path'
-import { ManagementToolbarComponentProps } from '@app/models/management-toolbar.model'
+import {
+  FilterItem,
+  ManagementToolbarComponentProps
+} from '../models/management-toolbar.model'
+import { RepositoryProperties } from '@entities/repository.model'
 
 const path = AppPath
 
 export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProps> = ({
   onSearchSubmit,
   onSearchTyping,
+  onFilterSubmit,
+  onFilterClear,
   searchValue
 }) => {
-  const filterItems = [
-    { label: 'Filter Action 1', onClick: () => alert('Filter clicked') },
-    { label: 'Filter Action 2', onClick: () => alert('Filter clicked') }
-  ]
+  const [filterParam, setFilterParam] = React.useState<RepositoryProperties>()
+  const filterItems: FilterItem[] = Object.keys(RepositoryProperties).map(
+    key => {
+      const castingKey = key as keyof typeof RepositoryProperties
+      const castingValue = RepositoryProperties[castingKey]
+      return {
+        label: castingValue,
+
+        onClick: () => {
+          setFilterParam(castingValue)
+          onFilterSubmit(castingKey)
+        }
+      }
+    }
+  )
 
   const viewTypes = [
     {
@@ -76,7 +92,11 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
           </ClayManagementToolbar.Item>
 
           <ClayDropDownWithItems
-            items={filterItems}
+            items={[
+              { label: 'ORDER BY', type: 'group' },
+              { type: 'divider' },
+              ...filterItems
+            ]}
             trigger={
               <ClayButton className="nav-link" displayType="unstyled">
                 <span className="navbar-breakpoint-down-d-none">
@@ -202,33 +222,31 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
         </ClayManagementToolbar.ItemList>
       </ClayManagementToolbar>
 
-      <ClayResultsBar>
-        <ClayResultsBar.Item>
-          <span className="component-text text-truncate-inline">
-            <span className="text-truncate">
-              {'2 results for "'}
-              <strong>{'Red'}</strong>
-              {'"'}
+      {filterParam && (
+        <ClayResultsBar>
+          <ClayResultsBar.Item>
+            <span className="component-text text-truncate-inline">
+              <span className="text-truncate">
+                {'Ordering by '}
+                <strong>{filterParam}</strong>
+              </span>
             </span>
-          </span>
-        </ClayResultsBar.Item>
-        <ClayResultsBar.Item expand>
-          <ClayLabel
-            className="component-label tbar-label"
-            displayType="unstyled"
-          >
-            {'Filter'}
-          </ClayLabel>
-        </ClayResultsBar.Item>
-        <ClayResultsBar.Item>
-          <ClayButton
-            className="component-link tbar-link"
-            displayType="unstyled"
-          >
-            {'Clear'}
-          </ClayButton>
-        </ClayResultsBar.Item>
-      </ClayResultsBar>
+          </ClayResultsBar.Item>
+          <ClayResultsBar.Item expand={true} />
+          <ClayResultsBar.Item>
+            <ClayButton
+              onClick={() => {
+                setFilterParam(undefined)
+                onFilterClear()
+              }}
+              className="component-link tbar-link"
+              displayType="unstyled"
+            >
+              {'Clear'}
+            </ClayButton>
+          </ClayResultsBar.Item>
+        </ClayResultsBar>
+      )}
     </>
   )
 }

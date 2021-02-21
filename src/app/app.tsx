@@ -8,7 +8,7 @@ import {
   Modal
 } from './components'
 import { repositories as mockedRepositories } from '@data/mocks'
-import { Repository } from '@entities/repository.model'
+import { Repository, RepositoryProperties } from '@entities/repository.model'
 import { AppStrings } from './app-strings'
 import { EmptyState, EmptyStateProps } from './models/empty-state.model'
 import { RepositoryHandler } from './models/repository-handler'
@@ -18,8 +18,10 @@ const { ContainerFluid, Col, Row } = ClayLayout
 const strings = AppStrings
 
 export const App: React.FC = () => {
-  const mainRepositories = mockedRepositories
-  const [repositories, setRepositories] = React.useState(mainRepositories)
+  const repositoriesRef = React.useRef(mockedRepositories)
+  const [repositories, setRepositories] = React.useState(
+    repositoriesRef.current
+  )
   const [
     currentActionRepository,
     setCurrentActionRepository
@@ -86,7 +88,7 @@ export const App: React.FC = () => {
   }
 
   const handleOnSearchSubmit = (searchString: string) => {
-    const filteredRepositories = mainRepositories.filter(repository =>
+    const filteredRepositories = repositoriesRef.current.filter(repository =>
       String(`${repository.owner}/${repository.name}`).includes(searchString)
     )
     if (!filteredRepositories.length) {
@@ -97,12 +99,50 @@ export const App: React.FC = () => {
     }
     setRepositories(filteredRepositories)
   }
+
+  const handleOnFilterSubmit = (
+    filterParam: keyof typeof RepositoryProperties
+  ) => {
+    const repositoriesCopy = repositories
+    const orderedRepositories = repositoriesCopy.sort(
+      (repositoryA, repositoryB) => {
+        const keys = Object.keys(repositoryA) as Array<keyof typeof repositoryA>
+        const repositoryProperty = keys.find(
+          key => key.toLowerCase() === filterParam.toLowerCase()
+        )
+        const repositoryPropertyPlaceholder = repositoryProperty || 'stars'
+
+        const repositoryAValue =
+          repositoryPropertyPlaceholder === 'starred'
+            ? repositoryA.stars
+            : repositoryA[repositoryPropertyPlaceholder]
+        const repositoryBValue =
+          repositoryPropertyPlaceholder === 'starred'
+            ? repositoryB.stars
+            : repositoryB[repositoryPropertyPlaceholder]
+
+        return repositoryBValue > repositoryAValue ? 1 : -1
+      }
+    )
+    setRepositories([...orderedRepositories])
+  }
+
+  const handleOnFilterClear = () => {
+    const repositoriesCopy = repositories
+    const orderedRepositories = repositoriesCopy.sort(
+      (repositoryA, repositoryB) => (repositoryA.id > repositoryB.id ? 1 : -1)
+    )
+    setRepositories([...orderedRepositories])
+  }
+
   return (
     <>
       <ManagementToolbarComponent
         searchValue={searchValue}
         onSearchTyping={handleOnSearchTyping}
         onSearchSubmit={handleOnSearchSubmit}
+        onFilterSubmit={handleOnFilterSubmit}
+        onFilterClear={handleOnFilterClear}
       />
       <ContainerFluid view={true}>
         <Row justify="start">
