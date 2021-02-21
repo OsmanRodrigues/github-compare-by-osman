@@ -1,5 +1,6 @@
 import NoData from '@assets/img/no-data-empty-state.gif'
 import NotFound from '@assets/img/not-found-empty-state.png'
+import { EmptyStateProps } from './models/empty-state.model'
 
 export const AppStrings = {
   EmptyState: {

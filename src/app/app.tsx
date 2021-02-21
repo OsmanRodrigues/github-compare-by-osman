@@ -81,7 +81,8 @@ export const App: React.FC = () => {
         }
       >
         <p>
-          Are you sure to delete the <b>{currentActionRepository?.name}</b>{' '}
+          Are you sure to delete the
+          <b>{` ${currentActionRepository?.name} `}</b>
           repository?
         </p>
       </Modal>
