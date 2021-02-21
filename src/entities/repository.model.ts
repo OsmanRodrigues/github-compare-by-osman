@@ -16,9 +16,10 @@ export interface Repository extends AbstractRepository {
 }
 
 export enum RepositoryProperties {
-  Stars = 'Stars',
-  Forks = 'Forks',
-  OpenIssues = 'Open Issues',
   Age = 'Age',
-  LastCommit = 'LastCommit'
+  Forks = 'Forks',
+  LastCommit = 'LastCommit',
+  OpenIssues = 'Open Issues',
+  Starred = 'Starred',
+  Stars = 'Stars'
 }

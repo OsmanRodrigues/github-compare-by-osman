@@ -12,6 +12,7 @@ import { Repository, RepositoryProperties } from '@entities/repository.model'
 import { AppStrings } from './app-strings'
 import { EmptyState, EmptyStateProps } from './models/empty-state.model'
 import { RepositoryHandler } from './models/repository-handler'
+import { ShowStarredOnlyHandler } from './models/management-toolbar.model'
 
 const { ContainerFluid, Col, Row } = ClayLayout
 
@@ -33,8 +34,8 @@ export const App: React.FC = () => {
   })
 
   const initialEmptyState: EmptyState = {
-    isEmpty: !repositories?.length,
-    type: !repositories?.length ? 'no-data' : null
+    isEmpty: !mockedRepositories?.length,
+    type: !mockedRepositories?.length ? 'no-data' : null
   }
 
   const [emptyState, setEmptyState] = React.useState<EmptyState>(
@@ -128,11 +129,29 @@ export const App: React.FC = () => {
   }
 
   const handleOnFilterClear = () => {
-    const repositoriesCopy = repositories
+    const repositoriesCopy = mockedRepositories
     const orderedRepositories = repositoriesCopy.sort(
       (repositoryA, repositoryB) => (repositoryA.id > repositoryB.id ? 1 : -1)
     )
     setRepositories([...orderedRepositories])
+    setEmptyState(initialEmptyState)
+  }
+
+  const handleOnShowStarredOnly: ShowStarredOnlyHandler = isShowing => {
+    const repositoriesCopy = repositories
+    const filteredRepositories = repositoriesCopy.filter(
+      repository => repository?.starred
+    )
+
+    if (isShowing) {
+      handleOnFilterClear()
+    } else {
+      setEmptyState({
+        isEmpty: !filteredRepositories?.length,
+        type: filteredRepositories?.length ? null : 'not-found'
+      })
+      setRepositories([...filteredRepositories])
+    }
   }
 
   return (
@@ -143,6 +162,7 @@ export const App: React.FC = () => {
         onSearchSubmit={handleOnSearchSubmit}
         onFilterSubmit={handleOnFilterSubmit}
         onFilterClear={handleOnFilterClear}
+        showStarredOnly={handleOnShowStarredOnly}
       />
       <ContainerFluid view={true}>
         <Row justify="start">

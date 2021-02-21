@@ -22,7 +22,8 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
   onSearchTyping,
   onFilterSubmit,
   onFilterClear,
-  searchValue
+  searchValue,
+  showStarredOnly
 }) => {
   const [filterParam, setFilterParam] = React.useState<RepositoryProperties>()
   const filterItems: FilterItem[] = Object.keys(RepositoryProperties).map(
@@ -39,7 +40,7 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
       }
     }
   )
-
+  const showingStarredOnly = filterParam === RepositoryProperties.Starred
   const viewTypes = [
     {
       label: 'List',
@@ -178,10 +179,16 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
               className="nav-link nav-link-monospaced"
               displayType="unstyled"
               onClick={() => {
-                console.log('nav link clicked')
+                if (showingStarredOnly) {
+                  setFilterParam(undefined)
+                  showStarredOnly(showingStarredOnly)
+                } else {
+                  setFilterParam(RepositoryProperties.Starred)
+                  showStarredOnly(showingStarredOnly)
+                }
               }}
             >
-              <ClayIcon symbol="star-o" />
+              <ClayIcon symbol={showingStarredOnly ? 'star' : 'star-o'} />
             </ClayButton>
           </ClayManagementToolbar.Item>
 
@@ -227,7 +234,7 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
           <ClayResultsBar.Item>
             <span className="component-text text-truncate-inline">
               <span className="text-truncate">
-                {'Ordering by '}
+                {showingStarredOnly ? 'Showing ' : 'Ordering by '}
                 <strong>{filterParam}</strong>
               </span>
             </span>
