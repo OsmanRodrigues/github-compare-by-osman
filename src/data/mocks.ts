@@ -15,9 +15,9 @@ export const repositorySample: Repository = {
 
 export const repositories: Repository[] = [
   repositorySample,
-  { ...repositorySample, id: 'repo2' },
+  { ...repositorySample, id: 'repo2', starred: true },
   { ...repositorySample, id: 'repo3' },
-  { ...repositorySample, id: 'repo4' },
+  { ...repositorySample, id: 'repo4', starred: true },
   { ...repositorySample, id: 'repo5' },
-  { ...repositorySample, id: 'repo6' }
+  { ...repositorySample, id: 'repo6', starred: true }
 ]

@@ -1,15 +1,10 @@
 import * as React from 'react'
-import { ClayButtonWithIcon } from '@clayui/button'
 import ClayCard from '@clayui/card'
 import ClayIcon from '@clayui/icon'
 import ClayLabel from '@clayui/label'
-import { Repository } from '@entities/repository.model'
 import ClayList from '@clayui/list'
-
-interface InteractiveCardProps {
-  data: Repository
-  repositoryDeleteHandler: () => void
-}
+import { ClayButtonWithIcon } from '@clayui/button'
+import { InteractiveCardProps } from '@app/models/interactive-card.model'
 
 const InteractiveCardList = ClayList
 InteractiveCardList.defaultProps = { style: { margin: 0 } }
@@ -21,7 +16,8 @@ ClayCard.Caption.defaultProps = { style: { fontSize: 14 } }
 
 export const InteractiveCard: React.FC<InteractiveCardProps> = ({
   data,
-  repositoryDeleteHandler
+  onDeleteHandler,
+  onStarredHandler
 }) => {
   // const [value, setValue] = React.useState(false)
 
@@ -40,11 +36,15 @@ export const InteractiveCard: React.FC<InteractiveCardProps> = ({
             </InteractiveCardList.ItemTitle>
           </InteractiveCardList.ItemField>
           <InteractiveCardList.ItemField>
-            <ClayButtonWithIcon symbol="star-o" displayType="unstyled" />
+            <ClayButtonWithIcon
+              onClick={onStarredHandler}
+              symbol={data?.starred ? 'star' : 'star-o'}
+              displayType="unstyled"
+            />
           </InteractiveCardList.ItemField>
           <InteractiveCardList.ItemField>
             <ClayButtonWithIcon
-              onClick={repositoryDeleteHandler}
+              onClick={onDeleteHandler}
               symbol="trash"
               displayType="unstyled"
             />

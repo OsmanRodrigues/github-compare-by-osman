@@ -11,6 +11,7 @@ import { repositories as mockedRepositories } from '@data/mocks'
 import { Repository } from '@entities/repository.model'
 import { AppStrings } from './app-strings'
 import { EmptyState, EmptyStateProps } from './models/empty-state.model'
+import { RepositoryHandler } from './models/repository-handler'
 
 const { ContainerFluid, Col, Row } = ClayLayout
 
@@ -38,20 +39,38 @@ export const App: React.FC = () => {
       ? { ...strings.EmptyState.NoData }
       : { ...strings.EmptyState.NotFound }
 
-  const handleOnOpenModal = (repository: Repository) => {
+  const handleOnOpenModal: RepositoryHandler = repository => {
     setCurrentActionRepository(repository)
     setModalVisible(true)
   }
 
-  const handleOnDeleteRepository = (repository?: Repository) => {
-    if (repository) {
-      const currentRepositories = repositories
+  const handleOnDeleteRepository: RepositoryHandler = repository => {
+    // TODO: remove this workaround after integration
+    const repositoriesCopy = repositories
 
-      setRepositories(
-        currentRepositories.filter(
-          currentRepository => currentRepository.id !== repository.id
-        )
+    setRepositories(
+      repositoriesCopy.filter(
+        currentRepository => currentRepository.id !== repository?.id
       )
+    )
+  }
+
+  const handleOnStarred: RepositoryHandler = repository => {
+    // TODO: remove this workaround after integration
+    if (repository) {
+      const repositoriesCopy = repositories
+      const filteredRepositories = repositoriesCopy.filter(
+        currentRepository => currentRepository.id !== repository?.id
+      )
+      const unstarredRepository = {
+        ...repository,
+        starred: !repository?.starred
+      }
+      const upadatedRepositories = [
+        ...filteredRepositories,
+        unstarredRepository
+      ]
+      setRepositories(upadatedRepositories)
     }
   }
 
@@ -65,7 +84,8 @@ export const App: React.FC = () => {
             repositories.map(repository => (
               <Col xs={12} sm={6} md={6} lg={4} key={repository.id}>
                 <InteractiveCard
-                  repositoryDeleteHandler={() => handleOnOpenModal(repository)}
+                  onDeleteHandler={() => handleOnOpenModal(repository)}
+                  onStarredHandler={() => handleOnStarred(repository)}
                   data={repository}
                 />
               </Col>
