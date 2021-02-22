@@ -23,13 +23,13 @@ Github compare is an app to find and store your favorites Github repos!
 
 ### Desktop
 <kbd>
-<img src='https://raw.githubusercontent.com/OsmanRodrigues/github-compare-by-osman/main/views/github_compare1.png?token=ANEAO6IAQAAG4QOPHEBEG2DAGMTCY' width='auto' heigth='406' align-self='center'>
+<img src='https://raw.githubusercontent.com/OsmanRodrigues/github-compare-by-osman/main/views/github_compare1.png?token=ANEAO6OMZHVORVPHI5HERQTAGMVBU' width='auto' heigth='406' align-self='center'>
 </kbd>
 <kbd>
-<img src='https://raw.githubusercontent.com/OsmanRodrigues/github-compare-by-osman/main/views/github_compare2.png?token=ANEAO6NAIYRIDR6PNFYITU3AGMTDO' width='auto' heigth='406' align-self='center'>
+<img src='https://raw.githubusercontent.com/OsmanRodrigues/github-compare-by-osman/main/views/github_compare2.png?token=ANEAO6P6V3SB3FGHH3B7KULAGMVEA' width='auto' heigth='406' align-self='center'>
 </kbd>
 <kbd>
-<img src='https://raw.githubusercontent.com/OsmanRodrigues/github-compare-by-osman/main/views/github_compare3.png?token=ANEAO6OGS2DCTCE2DL4R2K3AGMTD6' width='auto' heigth='406' align-self='center'>
+<img src='https://raw.githubusercontent.com/OsmanRodrigues/github-compare-by-osman/main/views/github_compare3.png?token=ANEAO6ICV7JH2WRCEMTFSFDAGMVFK' width='auto' heigth='406' align-self='center'>
 </kbd>
 
 ### Mobile
