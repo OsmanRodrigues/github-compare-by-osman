@@ -13,7 +13,7 @@ Github compare is an app to find and store your favorites Github repos!
 ## Install and run
 
 ### Steps
-<li>1 - Clone this repository in your local folder with: `git clone https://github.com/OsmanRodrigues/github-compare-by-osman.git`</li>
+<li>1 - Clone this repository in your local folder with: ```git clone https://github.com/OsmanRodrigues/github-compare-by-osman.git```</li>
 <li>2 - Write the Github graphql api url above and your Github credentials (user token and user name) in `default.env` file and rename it to `.env`</li>
 <li>3 - Run command `yarn install`</li>
 <li>4 - Then, run `yarn start`</li>
