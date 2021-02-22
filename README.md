@@ -20,7 +20,7 @@ Github compare is an app to find and store your favorites Github repos!
 4. Then, run `yarn start`
 5. Enjoy! ;)
 
-You can see the kanban of this work<a target="_blank"  href="https://www.notion.so/f33ca7d40a18496e93bffbe81127b5dc?v=155590c6559b48a7b5c82a5d2789cf6b"> here</a>.
+You can see the kanban of this work<a target="_blank" rel="noopener noreferrer" href="https://www.notion.so/f33ca7d40a18496e93bffbe81127b5dc?v=155590c6559b48a7b5c82a5d2789cf6b"> here</a>.
 
 ## Views
 
