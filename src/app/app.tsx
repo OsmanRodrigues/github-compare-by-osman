@@ -110,12 +110,11 @@ export const App: React.FC = () => {
     filterParam: keyof typeof RepositoryProperties
   ) => {
     const repositoriesCopy = repositories
-    console.log('copy filter: ', repositoriesCopy)
     const orderedRepositories = repositoriesCopy.sort(
       (repositoryA, repositoryB) => {
         const keys = Object.keys(repositoryA) as Array<keyof typeof repositoryA>
         const repositoryProperty = keys.find(
-          key => key.toLowerCase() === RepositoryPropertiesDict[filterParam] // put dict here
+          key => key.toLowerCase() === RepositoryPropertiesDict[filterParam]
         )
 
         switch (repositoryProperty) {
@@ -144,7 +143,6 @@ export const App: React.FC = () => {
   }
   const handleOnFilterClear = () => {
     const repositoriesCopy = repositoriesRef.current
-    console.log('copy filter: ', repositoriesCopy)
     const orderedRepositories = repositoriesCopy.sort(
       (repositoryA, repositoryB) => (repositoryA.id > repositoryB.id ? 1 : -1)
     )
