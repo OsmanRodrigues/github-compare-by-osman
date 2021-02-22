@@ -4,8 +4,8 @@ import ClayIcon from '@clayui/icon'
 import ClayLabel from '@clayui/label'
 import ClayList from '@clayui/list'
 import { ClayButtonWithIcon } from '@clayui/button'
-import { InteractiveCardProps } from '@app/models/interactive-card.model'
 import { dateConversor } from '@tools/date-conversor.tool'
+import { InteractiveCardProps } from '../models/interactive-card.model'
 
 const InteractiveCardList = ClayList
 InteractiveCardList.defaultProps = { style: { margin: 0 } }
