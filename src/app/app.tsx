@@ -2,22 +2,22 @@ import * as React from 'react'
 import ClayLayout from '@clayui/layout'
 import ClayEmptyState from '@clayui/empty-state'
 import { useModal } from '@clayui/modal'
-import {
-  InteractiveCard,
-  ManagementToolbarComponent,
-  Modal
-} from './components'
+import { useLazyQuery } from '@apollo/client'
+import { QueryDocument } from '@data/query/query.document'
 import {
   Repository,
   RepositoryProperties,
   RepositoryPropertiesDict
 } from '@entities/repository.model'
+import {
+  InteractiveCard,
+  ManagementToolbarComponent,
+  Modal
+} from './components'
 import { AppStrings } from './app-strings'
 import { EmptyState, EmptyStateProps } from './models/empty-state.model'
 import { RepositoryHandler } from './models/repository-handler.model'
 import { ShowStarredOnlyHandler } from './models/management-toolbar.model'
-import { useLazyQuery } from '@apollo/client'
-import { QueryDocument } from '@data/query/query.document'
 import { NewRepositoryState } from './models/new-repository.model'
 
 const { ContainerFluid, Col, Row } = ClayLayout
