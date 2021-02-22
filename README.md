@@ -7,8 +7,8 @@ Github compare is an app to find and store your favorites Github repos!
 <li>ClayUi, React and Typescript</li>     
 
 ## Other technologies
-⋅⋅* Github Graphql API: `https://api.github.com/graphql`
-⋅⋅* Integration with Apollo Client
++ Github Graphql API: `https://api.github.com/graphql`
++ Integration with Apollo Client
 
 ## Install and run
 
