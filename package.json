@@ -3,6 +3,26 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "3.3.11",
+    "@clayui/badge": "3.2.0",
+    "@clayui/button": "3.6.0",
+    "@clayui/card": "3.6.6",
+    "@clayui/css": "3.24.1",
+    "@clayui/empty-state": "3.2.0",
+    "@clayui/form": "3.14.4",
+    "@clayui/icon": "3.1.0",
+    "@clayui/label": "3.4.1",
+    "@clayui/layout": "3.3.0",
+    "@clayui/link": "3.2.0",
+    "@clayui/list": "3.4.7",
+    "@clayui/loading-indicator": "3.2.0",
+    "@clayui/management-toolbar": "3.3.0",
+    "@clayui/modal": "3.8.5",
+    "@clayui/popover": "3.5.5",
+    "@craco/craco": "6.1.1",
+    "graphql": "15.5.0",
+    "patch-package": "6.2.2",
+    "postinstall-postinstall": "2.1.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-scripts": "4.0.2"
@@ -31,10 +51,11 @@
   "scripts": {
     "check-types": "tsc --noEmit",
     "lint": "eslint 'src/**/*.{ts,tsx}' && yarn check-types",
-    "start": "yarn lint && yarn react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --watchAll=false",
-    "eject": "react-scripts eject"
+    "start": "yarn lint && yarn craco start",
+    "build": "craco build",
+    "test": "craco test --watchAll=false",
+    "eject": "react-scripts eject",
+    "postinstall": "patch-package"
   },
   "eslintConfig": {
     "extends": [
@@ -53,5 +74,17 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^@root(.*)$": "<rootDir>/src$1",
+      "^@adapters(.*)$": "<rootDir>/src/adapters$1",
+      "^@app(.*)$": "<rootDir>/src/app$1",
+      "^@assets(.*)$": "<rootDir>/src/assets$1",
+      "^@data(.*)$": "<rootDir>/src/data$1",
+      "^@entities(.*)$": "<rootDir>/src/entities$1",
+      "^@shared(.*)$": "<rootDir>/src/shared$1",
+      "^@tools(.*)$": "<rootDir>/src/tools$1"
+    }
   }
 }
