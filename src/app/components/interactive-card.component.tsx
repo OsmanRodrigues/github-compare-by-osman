@@ -5,6 +5,7 @@ import ClayLabel from '@clayui/label'
 import ClayList from '@clayui/list'
 import { ClayButtonWithIcon } from '@clayui/button'
 import { InteractiveCardProps } from '@app/models/interactive-card.model'
+import { dateConversor } from '@tools/date-conversor.tool'
 
 const InteractiveCardList = ClayList
 InteractiveCardList.defaultProps = { style: { margin: 0 } }
@@ -32,7 +33,7 @@ export const InteractiveCard: React.FC<InteractiveCardProps> = ({
           </InteractiveCardList.ItemField>
           <InteractiveCardList.ItemField expand={true}>
             <InteractiveCardList.ItemTitle>
-              {`${data.owner}/${data.name}`}
+              {`${data.nameWithOwner}`}
             </InteractiveCardList.ItemTitle>
           </InteractiveCardList.ItemField>
           <InteractiveCardList.ItemField>
@@ -57,30 +58,32 @@ export const InteractiveCard: React.FC<InteractiveCardProps> = ({
             <section className="autofit-section">
               <ClayCard.Caption>
                 <b>{'Stars '}</b>
-                {data.stars}
+                {data.stargazerCount}
               </ClayCard.Caption>
               <ClayCard.Caption>
                 <b>{'Forks '}</b>
-                {data.forks}
+                {data.forkCount}
               </ClayCard.Caption>
               <ClayCard.Caption>
                 <b>{'Open Issues '}</b>
-                {data.openIssues}
+                {data.issues.totalCount}
               </ClayCard.Caption>
               <ClayCard.Caption>
                 <b>{'Age '}</b>
-                {data.age.toLocaleString()}
+                {dateConversor.getLabel(data.createdAt)}
               </ClayCard.Caption>
               <ClayCard.Caption>
                 <b>{'Last commit '}</b>
-                {data.lastCommit.toLocaleString()}
+                {dateConversor.getLabel(data.pushedAt)}
               </ClayCard.Caption>
               <ClayCard.Caption>
                 <b>{'License '}</b>
-                {data.license}
+                {data?.licenseInfo || 'N/A'}
               </ClayCard.Caption>
               <ClayCard.Caption>
-                <ClayLabel displayType="warning">{data.tags}</ClayLabel>
+                <ClayLabel displayType="warning">
+                  {data.primaryLanguage.name}
+                </ClayLabel>
               </ClayCard.Caption>
             </section>
           </div>

@@ -1,1 +1,1 @@
-export * from './repository-infos.query'
+export * from './query.document'

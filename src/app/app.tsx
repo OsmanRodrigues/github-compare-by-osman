@@ -7,34 +7,33 @@ import {
   ManagementToolbarComponent,
   Modal
 } from './components'
-import { repositories as mockedRepositories } from '@data/mocks'
 import { Repository, RepositoryProperties } from '@entities/repository.model'
 import { AppStrings } from './app-strings'
 import { EmptyState, EmptyStateProps } from './models/empty-state.model'
 import { RepositoryHandler } from './models/repository-handler'
 import { ShowStarredOnlyHandler } from './models/management-toolbar.model'
-import { useQuery } from '@apollo/client'
-import { RepositoryInfosQuery } from '@data/query/repository-infos.query'
+import { useLazyQuery } from '@apollo/client'
+import { QueryDocument } from '@data/query/query.document'
 
 const { ContainerFluid, Col, Row } = ClayLayout
-
 const strings = AppStrings
+const document = QueryDocument
 
 export const App: React.FC = () => {
-  const repositoriesRef = React.useRef(mockedRepositories)
-  const [repositories, setRepositories] = React.useState(
-    repositoriesRef.current
-  )
-  const [newRepositoryNotFound, setNewRepositoryNotFound] = React.useState(
-    false
-  )
-  const [currentActionRepository, setCurrentActionRepository] = React.useState<{
-    repository: Repository | undefined
-    actionState?: string
+  const repositoriesRef = React.useRef<Repository[]>([])
+  const [repositories, setRepositories] = React.useState<Repository[]>([])
+  const [newRepository, setNewRepository] = React.useState<{
+    name: string
+    notFound?: boolean
   }>({
-    repository: undefined,
-    actionState: ''
+    name: '',
+    notFound: false
   })
+
+  const [
+    currentActionRepository,
+    setCurrentActionRepository
+  ] = React.useState<Repository>()
 
   const [modalVisble, setModalVisible] = React.useState(false)
   const { observer: modalObserver, onClose } = useModal({
@@ -42,8 +41,8 @@ export const App: React.FC = () => {
   })
 
   const initialEmptyState: EmptyState = {
-    isEmpty: !mockedRepositories?.length,
-    type: !mockedRepositories?.length ? 'no-data' : null
+    isEmpty: !repositories.length,
+    type: !repositories.length ? 'no-data' : null
   }
 
   const [emptyState, setEmptyState] = React.useState<EmptyState>(
@@ -55,15 +54,36 @@ export const App: React.FC = () => {
       ? { ...strings.EmptyState.NoData }
       : { ...strings.EmptyState.NotFound }
 
+  console.log('repositories: ', repositories)
+  console.log('repositories ref: ', repositoriesRef.current)
+  const getRepositoryDocument = document.GetRepositoryInfosDocument(
+    newRepository.name || ''
+  )
+  const [getRepositoryQuery, getRepositoryQueryResult] = useLazyQuery(
+    getRepositoryDocument,
+    {
+      onCompleted: data => {
+        repositoriesRef.current = [
+          { ...data.repository, starred: false },
+          ...repositoriesRef.current
+        ]
+        setRepositories([
+          { ...data.repository, starred: false },
+          ...repositories
+        ])
+        setEmptyState({ isEmpty: false, type: null })
+      }
+    }
+  )
+
   const [searchValue, setSearchValue] = React.useState('')
 
   const handleOnOpenModal: RepositoryHandler = repository => {
-    setCurrentActionRepository({ repository })
+    setCurrentActionRepository(repository)
     setModalVisible(true)
   }
 
   const handleOnDeleteRepository: RepositoryHandler = repository => {
-    // TODO: remove this workaround after integration
     const repositoriesCopy = repositories
 
     setRepositories(
@@ -76,7 +96,7 @@ export const App: React.FC = () => {
   const handleOnStarred: RepositoryHandler = repository => {
     // TODO: remove this workaround after integration
     if (repository) {
-      const repositoriesCopy = repositories
+      const repositoriesCopy = repositoriesRef.current
       const filteredRepositories = repositoriesCopy.filter(
         currentRepository => currentRepository.id !== repository?.id
       )
@@ -97,8 +117,9 @@ export const App: React.FC = () => {
   }
 
   const handleOnSearchSubmit = (searchString: string) => {
-    const filteredRepositories = repositoriesRef.current.filter(repository =>
-      String(`${repository.owner}/${repository.name}`).includes(searchString)
+    const repositoriesCopy = repositoriesRef.current
+    const filteredRepositories = repositoriesCopy.filter(repository =>
+      String(`${repository.nameWithOwner}`).includes(searchString)
     )
     if (!filteredRepositories.length) {
       setEmptyState({ isEmpty: true, type: 'not-found' })
@@ -112,32 +133,40 @@ export const App: React.FC = () => {
   const handleOnFilterSubmit = (
     filterParam: keyof typeof RepositoryProperties
   ) => {
-    const repositoriesCopy = repositories
+    const repositoriesCopy = repositoriesRef.current
     const orderedRepositories = repositoriesCopy.sort(
       (repositoryA, repositoryB) => {
         const keys = Object.keys(repositoryA) as Array<keyof typeof repositoryA>
         const repositoryProperty = keys.find(
-          key => key.toLowerCase() === filterParam.toLowerCase()
+          key => key.toLowerCase() === filterParam.toLowerCase() // put dict here
         )
-        const repositoryPropertyPlaceholder = repositoryProperty || 'stars'
 
-        const repositoryAValue =
-          repositoryPropertyPlaceholder === 'starred'
-            ? repositoryA.stars
-            : repositoryA[repositoryPropertyPlaceholder]
-        const repositoryBValue =
-          repositoryPropertyPlaceholder === 'starred'
-            ? repositoryB.stars
-            : repositoryB[repositoryPropertyPlaceholder]
-
-        return repositoryBValue > repositoryAValue ? 1 : -1
+        switch (repositoryProperty) {
+          case 'stargazerCount' || 'starred':
+            return repositoryB.stargazerCount > repositoryA.stargazerCount
+              ? 1
+              : -1
+          case 'createdAt' || 'pushedAt':
+            return new Date(repositoryB.createdAt).getMilliseconds() >
+              new Date(repositoryA.createdAt).getMilliseconds()
+              ? 1
+              : -1
+          case 'issues':
+            return repositoryB.issues.totalCount > repositoryA.issues.totalCount
+              ? 1
+              : -1
+          default:
+            return repositoryB.stargazerCount > repositoryA.stargazerCount
+              ? 1
+              : -1
+        }
       }
     )
     setRepositories([...orderedRepositories])
   }
 
   const handleOnFilterClear = () => {
-    const repositoriesCopy = mockedRepositories
+    const repositoriesCopy = repositoriesRef.current
     const orderedRepositories = repositoriesCopy.sort(
       (repositoryA, repositoryB) => (repositoryA.id > repositoryB.id ? 1 : -1)
     )
@@ -163,18 +192,9 @@ export const App: React.FC = () => {
   }
 
   const handleOnAddRepository = (newRepositoryName: string) => {
-    setNewRepositoryNotFound(false)
+    setNewRepository({ name: newRepositoryName, notFound: false })
     if (newRepositoryName) {
-      const repositoriesCopy = repositories
-      const newRepository = mockedRepositories.find(repository =>
-        repository.name.includes(newRepositoryName)
-      )
-
-      if (newRepository) {
-        setRepositories([newRepository, ...repositoriesCopy])
-      } else {
-        setNewRepositoryNotFound(true)
-      }
+      getRepositoryQuery()
     }
   }
 
@@ -182,7 +202,7 @@ export const App: React.FC = () => {
     <>
       <ManagementToolbarComponent
         searchValue={searchValue}
-        newRepositoryNotFound={newRepositoryNotFound}
+        newRepositoryNotFound={!!getRepositoryQueryResult?.error}
         onAddRepository={handleOnAddRepository}
         onSearchTyping={handleOnSearchTyping}
         onSearchSubmit={handleOnSearchSubmit}
@@ -210,12 +230,12 @@ export const App: React.FC = () => {
         observer={modalObserver}
         closeModalHandler={onClose}
         confirmActionModalHandler={() =>
-          handleOnDeleteRepository(currentActionRepository.repository)
+          handleOnDeleteRepository(currentActionRepository)
         }
       >
         <p>
           Are you sure to delete the
-          <b>{` ${currentActionRepository.repository?.name} `}</b>
+          <b>{` ${currentActionRepository?.nameWithOwner} `}</b>
           repository?
         </p>
       </Modal>
