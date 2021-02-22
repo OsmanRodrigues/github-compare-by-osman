@@ -60,25 +60,19 @@ export const App: React.FC = () => {
     userName: splitedName?.[1] ? splitedName[0] : ''
   }
   const getRepositoryDocument = document.GetRepositoryInfosDocument(queryParams)
-  const [getRepositoryQuery, getRepositoryQueryResult] = useLazyQuery(
-    getRepositoryDocument,
-    {
-      onCompleted: data => {
-        repositoriesRef.current = [
-          { ...data.repository, starred: false },
-          ...repositoriesRef.current
-        ]
-        setRepositories([
-          { ...data.repository, starred: false },
-          ...repositories
-        ])
-        setEmptyState({ isEmpty: false, type: null })
-      },
-      onError: () => {
-        setNewRepository({ name: '', notFound: true })
-      }
+  const [getRepositoryQuery] = useLazyQuery(getRepositoryDocument, {
+    onCompleted: data => {
+      repositoriesRef.current = [
+        { ...data.repository, starred: false },
+        ...repositoriesRef.current
+      ]
+      setRepositories([{ ...data.repository, starred: false }, ...repositories])
+      setEmptyState({ isEmpty: false, type: null })
+    },
+    onError: () => {
+      setNewRepository({ name: '', notFound: true })
     }
-  )
+  })
 
   const handleOnAddRepository = (newRepositoryName: string) => {
     setNewRepository({ name: newRepositoryName, notFound: false })
