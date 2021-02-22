@@ -14,7 +14,7 @@ interface AbstractRepository {
   createdAt: string
   forkCount: number
   issues: { totalCount: number }
-  licenseInfo: string | null
+  licenseInfo: { name: string } | null
   nameWithOwner: string
   primaryLanguage: { color: string; name: string }
   pushedAt: string

@@ -54,11 +54,14 @@ export const App: React.FC = () => {
       ? { ...strings.EmptyState.NoData }
       : { ...strings.EmptyState.NotFound }
 
-  console.log('repositories: ', repositories)
-  console.log('repositories ref: ', repositoriesRef.current)
-  const getRepositoryDocument = document.GetRepositoryInfosDocument(
-    newRepository.name || ''
-  )
+  const splitedName = newRepository.name.split('/' || '')
+  const queryParams = {
+    repositoryName: splitedName?.[1] ? splitedName[1] : splitedName[0],
+    userName: splitedName?.[1] ? splitedName[0] : ''
+  }
+
+  const getRepositoryDocument = document.GetRepositoryInfosDocument(queryParams)
+
   const [getRepositoryQuery, getRepositoryQueryResult] = useLazyQuery(
     getRepositoryDocument,
     {

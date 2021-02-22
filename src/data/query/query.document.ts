@@ -3,9 +3,14 @@ import { DocumentNode, gql } from '@apollo/client/core'
 const userName = process.env.REACT_APP_GITHUB_USER_NAME
 
 export const QueryDocument = {
-  GetRepositoryInfosDocument: (repositoryName: string): DocumentNode => gql`
+  GetRepositoryInfosDocument: (params: {
+    repositoryName: string
+    userName?: string
+  }): DocumentNode => gql`
     query {
-      repository(owner:"${userName}", name:"${repositoryName}") {
+      repository(
+        owner:"${params?.userName || userName}", name:"${params.repositoryName}"
+        ) {
         id
         nameWithOwner
         forkCount

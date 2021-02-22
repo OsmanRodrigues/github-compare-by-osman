@@ -20,8 +20,6 @@ export const InteractiveCard: React.FC<InteractiveCardProps> = ({
   onDeleteHandler,
   onStarredHandler
 }) => {
-  // const [value, setValue] = React.useState(false)
-
   return (
     <ClayCard displayType="file">
       <InteractiveCardList>
@@ -78,7 +76,7 @@ export const InteractiveCard: React.FC<InteractiveCardProps> = ({
               </ClayCard.Caption>
               <ClayCard.Caption>
                 <b>{'License '}</b>
-                {data?.licenseInfo || 'N/A'}
+                {data?.licenseInfo?.name || 'N/A'}
               </ClayCard.Caption>
               <ClayCard.Caption>
                 <ClayLabel displayType="warning">
