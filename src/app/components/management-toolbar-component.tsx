@@ -8,13 +8,13 @@ import ClayManagementToolbar, {
 } from '@clayui/management-toolbar'
 import ClayLink from '@clayui/link'
 import ClayPopover from '@clayui/popover'
+import { RepositoryProperties } from '@entities/repository.model'
 import GitHubLogo from '@assets/img/github-logo.svg'
 import { AppPath } from '../app-path'
 import {
   FilterItem,
   ManagementToolbarComponentProps
 } from '../models/management-toolbar.model'
-import { RepositoryProperties } from '@entities/repository.model'
 
 const path = AppPath
 
@@ -66,9 +66,7 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
       symbolLeft: 'cards2'
     }
   ]
-
   const [searchMobile, setSearchMobile] = React.useState(false)
-
   const viewTypeActive = viewTypes.find(type => type.active)
 
   return (

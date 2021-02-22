@@ -1,14 +1,7 @@
 import * as React from 'react'
 import ClayButton from '@clayui/button'
 import ClayModal from '@clayui/modal'
-import { Observer as ClayModalObserver } from '@clayui/modal/lib/types'
-
-interface ModalProps {
-  observer: ClayModalObserver
-  visible: boolean
-  closeModalHandler: () => void
-  confirmActionModalHandler: () => void
-}
+import { ModalProps } from '../models/modal.model'
 
 export const Modal: React.FC<ModalProps> = ({
   closeModalHandler,

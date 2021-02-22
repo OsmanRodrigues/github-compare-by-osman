@@ -1,13 +1,12 @@
 interface AbstractRepository {
-  name: string
-  owner: string
-  stars: number
-  forks: number
-  openIssues: number
-  age: number
-  lastCommit: number
-  license: 'N/A' | 'MIT'
-  tags: string
+  createdAt: string
+  forkCount: number
+  issues: { totalCount: number }
+  licenseInfo: { name: string } | null
+  nameWithOwner: string
+  primaryLanguage: { color: string; name: string }
+  pushedAt: string
+  stargazerCount: number
 }
 
 export interface Repository extends AbstractRepository {
@@ -16,10 +15,19 @@ export interface Repository extends AbstractRepository {
 }
 
 export enum RepositoryProperties {
-  Age = 'Age',
+  Stars = 'Stars',
   Forks = 'Forks',
-  LastCommit = 'LastCommit',
   OpenIssues = 'Open Issues',
-  Starred = 'Starred',
-  Stars = 'Stars'
+  Age = 'Age',
+  LastCommit = 'Last Commit',
+  Starred = 'Starred'
+}
+
+export enum RepositoryPropertiesDict {
+  Stars = 'stargazerCount',
+  Forks = 'forkCount',
+  OpenIssues = 'issues',
+  Age = 'createdAt',
+  LastCommit = 'pushedAt',
+  Starred = 'starred'
 }
