@@ -26,13 +26,13 @@ You can see the kanban of this work<a target="_blank"  href="https://www.notion.
 
 ### Desktop
 <kbd>
-<img src='https://github.com/OsmanRodrigues/github-compare-by-osman/blob/main/views/github_compare1.png?raw=true' width='auto' heigth='406' align-self='center'>
+<img src='https://github.com/OsmanRodrigues/github-compare-by-osman/blob/main/views/github_compare3.png?raw=true' width='auto' heigth='406' align-self='center'>
 </kbd>
 <kbd>
 <img src='https://github.com/OsmanRodrigues/github-compare-by-osman/blob/main/views/github_compare2.png?raw=true' width='auto' heigth='406' align-self='center'>
 </kbd>
 <kbd>
-<img src='https://github.com/OsmanRodrigues/github-compare-by-osman/blob/main/views/github_compare3.png?raw=true' width='auto' heigth='406' align-self='center'>
+<img src='https://github.com/OsmanRodrigues/github-compare-by-osman/blob/main/views/github_compare1.png?raw=true' width='auto' heigth='406' align-self='center'>
 </kbd>
 
 ### Mobile
