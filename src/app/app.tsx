@@ -82,8 +82,7 @@ export const App: React.FC = () => {
     }
   }
   const handleOnDeleteRepository: RepositoryHandler = repository => {
-    const repositoriesCopy = repositories
-    const filteredRepositories = repositoriesCopy.filter(
+    const filteredRepositories = repositories.filter(
       currentRepository => currentRepository.id !== repository?.id
     )
 
@@ -95,8 +94,7 @@ export const App: React.FC = () => {
     setSearchValue(event.currentTarget.value)
   }
   const handleOnSearchSubmit = (searchString: string) => {
-    const repositoriesCopy = repositoriesRef.current
-    const filteredRepositories = repositoriesCopy.filter(repository =>
+    const filteredRepositories = repositoriesRef.current.filter(repository =>
       String(`${repository.nameWithOwner}`).includes(searchString)
     )
 
@@ -111,7 +109,8 @@ export const App: React.FC = () => {
   const handleOnFilterSubmit = (
     filterParam: keyof typeof RepositoryProperties
   ) => {
-    const repositoriesCopy = repositoriesRef.current
+    const repositoriesCopy = repositories
+    console.log('copy filter: ', repositoriesCopy)
     const orderedRepositories = repositoriesCopy.sort(
       (repositoryA, repositoryB) => {
         const keys = Object.keys(repositoryA) as Array<keyof typeof repositoryA>
@@ -145,6 +144,7 @@ export const App: React.FC = () => {
   }
   const handleOnFilterClear = () => {
     const repositoriesCopy = repositoriesRef.current
+    console.log('copy filter: ', repositoriesCopy)
     const orderedRepositories = repositoriesCopy.sort(
       (repositoryA, repositoryB) => (repositoryA.id > repositoryB.id ? 1 : -1)
     )
@@ -155,23 +155,22 @@ export const App: React.FC = () => {
 
   const handleOnStarred: RepositoryHandler = repository => {
     if (repository) {
-      const repositoriesCopy = repositories
-      const filteredRepositories = repositoriesCopy.filter(
-        currentRepository => currentRepository.id !== repository?.id
-      )
       const updatedRepository = {
         ...repository,
         starred: !repository?.starred
       }
-      const upadatedRepositories = [...filteredRepositories, updatedRepository]
+      const upadatedRepositories = repositories.map(currentRepository =>
+        currentRepository.id === updatedRepository.id
+          ? updatedRepository
+          : currentRepository
+      )
 
       repositoriesRef.current = upadatedRepositories
       setRepositories(upadatedRepositories)
     }
   }
   const handleOnShowStarredOnly: ShowStarredOnlyHandler = isShowing => {
-    const repositoriesCopy = repositories
-    const filteredRepositories = repositoriesCopy.filter(
+    const filteredRepositories = repositories.filter(
       repository => repository?.starred
     )
 
