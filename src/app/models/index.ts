@@ -1,3 +1,5 @@
 export * from './empty-state.model'
 export * from './interactive-card.model'
-export * from './repository-handler'
+export * from './management-toolbar.model'
+export * from './new-repository.model'
+export * from './repository-handler.model'

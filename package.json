@@ -20,7 +20,7 @@
     "@clayui/modal": "3.8.5",
     "@clayui/popover": "3.5.5",
     "@craco/craco": "6.1.1",
-    "graphql": "^15.5.0",
+    "graphql": "15.5.0",
     "patch-package": "6.2.2",
     "postinstall-postinstall": "2.1.0",
     "react": "17.0.1",

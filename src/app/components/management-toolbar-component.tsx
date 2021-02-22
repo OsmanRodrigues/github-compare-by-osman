@@ -66,9 +66,7 @@ export const ManagementToolbarComponent: React.FC<ManagementToolbarComponentProp
       symbolLeft: 'cards2'
     }
   ]
-
   const [searchMobile, setSearchMobile] = React.useState(false)
-
   const viewTypeActive = viewTypes.find(type => type.active)
 
   return (

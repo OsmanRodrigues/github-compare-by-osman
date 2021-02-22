@@ -14,10 +14,11 @@ import {
 } from '@entities/repository.model'
 import { AppStrings } from './app-strings'
 import { EmptyState, EmptyStateProps } from './models/empty-state.model'
-import { RepositoryHandler } from './models/repository-handler'
+import { RepositoryHandler } from './models/repository-handler.model'
 import { ShowStarredOnlyHandler } from './models/management-toolbar.model'
 import { useLazyQuery } from '@apollo/client'
 import { QueryDocument } from '@data/query/query.document'
+import { NewRepositoryState } from './models/new-repository.model'
 
 const { ContainerFluid, Col, Row } = ClayLayout
 const strings = AppStrings
@@ -26,10 +27,7 @@ const document = QueryDocument
 export const App: React.FC = () => {
   const repositoriesRef = React.useRef<Repository[]>([])
   const [repositories, setRepositories] = React.useState<Repository[]>([])
-  const [newRepository, setNewRepository] = React.useState<{
-    name: string
-    notFound?: boolean
-  }>({
+  const [newRepository, setNewRepository] = React.useState<NewRepositoryState>({
     name: '',
     notFound: false
   })
@@ -203,7 +201,7 @@ export const App: React.FC = () => {
     <>
       <ManagementToolbarComponent
         searchValue={searchValue}
-        newRepositoryNotFound={!!getRepositoryQueryResult?.error}
+        newRepositoryNotFound={newRepository.notFound}
         onAddRepository={handleOnAddRepository}
         onSearchTyping={handleOnSearchTyping}
         onSearchSubmit={handleOnSearchSubmit}
