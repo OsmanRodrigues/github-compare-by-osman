@@ -19,7 +19,7 @@ Github compare is an app to find and store your favorites Github repos!
 4 - Then, run `yarn start`
 5 - Enjoy! ;)
 
-##Views
+## Views
 
 ### Desktop
 <kbd>
