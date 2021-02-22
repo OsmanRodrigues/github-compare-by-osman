@@ -1,15 +1,3 @@
-interface FooRepository {
-  name: string
-  owner: string
-  stars: number
-  forks: number
-  openIssues: number
-  age: number
-  lastCommit: number
-  license: 'N/A' | 'MIT'
-  tags: string
-}
-
 interface AbstractRepository {
   createdAt: string
   forkCount: number
@@ -33,4 +21,13 @@ export enum RepositoryProperties {
   Age = 'Age',
   LastCommit = 'Last Commit',
   Starred = 'Starred'
+}
+
+export enum RepositoryPropertiesDict {
+  Stars = 'stargazerCount',
+  Forks = 'forkCount',
+  OpenIssues = 'issues',
+  Age = 'createdAt',
+  LastCommit = 'pushedAt',
+  Starred = 'starred'
 }

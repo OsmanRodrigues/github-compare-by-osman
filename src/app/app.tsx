@@ -7,7 +7,11 @@ import {
   ManagementToolbarComponent,
   Modal
 } from './components'
-import { Repository, RepositoryProperties } from '@entities/repository.model'
+import {
+  Repository,
+  RepositoryProperties,
+  RepositoryPropertiesDict
+} from '@entities/repository.model'
 import { AppStrings } from './app-strings'
 import { EmptyState, EmptyStateProps } from './models/empty-state.model'
 import { RepositoryHandler } from './models/repository-handler'
@@ -29,39 +33,35 @@ export const App: React.FC = () => {
     name: '',
     notFound: false
   })
-
   const [
     currentActionRepository,
     setCurrentActionRepository
   ] = React.useState<Repository>()
+  const [searchValue, setSearchValue] = React.useState('')
+
+  const initialEmptyState: EmptyState = {
+    isEmpty: !repositories.length,
+    type: !repositories.length ? 'no-data' : null
+  }
+  const [emptyState, setEmptyState] = React.useState<EmptyState>(
+    initialEmptyState
+  )
+  const emptyStateProps: EmptyStateProps =
+    emptyState.type === 'no-data'
+      ? { ...strings.EmptyState.NoData }
+      : { ...strings.EmptyState.NotFound }
 
   const [modalVisble, setModalVisible] = React.useState(false)
   const { observer: modalObserver, onClose } = useModal({
     onClose: () => setModalVisible(false)
   })
 
-  const initialEmptyState: EmptyState = {
-    isEmpty: !repositories.length,
-    type: !repositories.length ? 'no-data' : null
-  }
-
-  const [emptyState, setEmptyState] = React.useState<EmptyState>(
-    initialEmptyState
-  )
-
-  const emptyStateProps: EmptyStateProps =
-    emptyState.type === 'no-data'
-      ? { ...strings.EmptyState.NoData }
-      : { ...strings.EmptyState.NotFound }
-
   const splitedName = newRepository.name.split('/' || '')
   const queryParams = {
     repositoryName: splitedName?.[1] ? splitedName[1] : splitedName[0],
     userName: splitedName?.[1] ? splitedName[0] : ''
   }
-
   const getRepositoryDocument = document.GetRepositoryInfosDocument(queryParams)
-
   const [getRepositoryQuery, getRepositoryQueryResult] = useLazyQuery(
     getRepositoryDocument,
     {
@@ -75,62 +75,45 @@ export const App: React.FC = () => {
           ...repositories
         ])
         setEmptyState({ isEmpty: false, type: null })
+      },
+      onError: () => {
+        setNewRepository({ name: '', notFound: true })
       }
     }
   )
 
-  const [searchValue, setSearchValue] = React.useState('')
+  const handleOnAddRepository = (newRepositoryName: string) => {
+    setNewRepository({ name: newRepositoryName, notFound: false })
 
-  const handleOnOpenModal: RepositoryHandler = repository => {
-    setCurrentActionRepository(repository)
-    setModalVisible(true)
+    if (newRepositoryName) {
+      getRepositoryQuery()
+    }
   }
-
   const handleOnDeleteRepository: RepositoryHandler = repository => {
     const repositoriesCopy = repositories
-
-    setRepositories(
-      repositoriesCopy.filter(
-        currentRepository => currentRepository.id !== repository?.id
-      )
+    const filteredRepositories = repositoriesCopy.filter(
+      currentRepository => currentRepository.id !== repository?.id
     )
-  }
 
-  const handleOnStarred: RepositoryHandler = repository => {
-    // TODO: remove this workaround after integration
-    if (repository) {
-      const repositoriesCopy = repositoriesRef.current
-      const filteredRepositories = repositoriesCopy.filter(
-        currentRepository => currentRepository.id !== repository?.id
-      )
-      const unstarredRepository = {
-        ...repository,
-        starred: !repository?.starred
-      }
-      const upadatedRepositories = [
-        ...filteredRepositories,
-        unstarredRepository
-      ]
-      setRepositories(upadatedRepositories)
-    }
+    repositoriesRef.current = filteredRepositories
+    setRepositories(filteredRepositories)
   }
 
   const handleOnSearchTyping = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(event.currentTarget.value)
   }
-
   const handleOnSearchSubmit = (searchString: string) => {
     const repositoriesCopy = repositoriesRef.current
     const filteredRepositories = repositoriesCopy.filter(repository =>
       String(`${repository.nameWithOwner}`).includes(searchString)
     )
+
     if (!filteredRepositories.length) {
       setEmptyState({ isEmpty: true, type: 'not-found' })
     } else {
       setRepositories(filteredRepositories)
       setEmptyState({ isEmpty: false, type: null })
     }
-    setRepositories(filteredRepositories)
   }
 
   const handleOnFilterSubmit = (
@@ -141,7 +124,7 @@ export const App: React.FC = () => {
       (repositoryA, repositoryB) => {
         const keys = Object.keys(repositoryA) as Array<keyof typeof repositoryA>
         const repositoryProperty = keys.find(
-          key => key.toLowerCase() === filterParam.toLowerCase() // put dict here
+          key => key.toLowerCase() === RepositoryPropertiesDict[filterParam] // put dict here
         )
 
         switch (repositoryProperty) {
@@ -165,18 +148,35 @@ export const App: React.FC = () => {
         }
       }
     )
-    setRepositories([...orderedRepositories])
-  }
 
+    setRepositories(orderedRepositories)
+  }
   const handleOnFilterClear = () => {
     const repositoriesCopy = repositoriesRef.current
     const orderedRepositories = repositoriesCopy.sort(
       (repositoryA, repositoryB) => (repositoryA.id > repositoryB.id ? 1 : -1)
     )
-    setRepositories([...orderedRepositories])
+
+    setRepositories(orderedRepositories)
     setEmptyState(initialEmptyState)
   }
 
+  const handleOnStarred: RepositoryHandler = repository => {
+    if (repository) {
+      const repositoriesCopy = repositories
+      const filteredRepositories = repositoriesCopy.filter(
+        currentRepository => currentRepository.id !== repository?.id
+      )
+      const updatedRepository = {
+        ...repository,
+        starred: !repository?.starred
+      }
+      const upadatedRepositories = [...filteredRepositories, updatedRepository]
+
+      repositoriesRef.current = upadatedRepositories
+      setRepositories(upadatedRepositories)
+    }
+  }
   const handleOnShowStarredOnly: ShowStarredOnlyHandler = isShowing => {
     const repositoriesCopy = repositories
     const filteredRepositories = repositoriesCopy.filter(
@@ -190,15 +190,13 @@ export const App: React.FC = () => {
         isEmpty: !filteredRepositories?.length,
         type: filteredRepositories?.length ? null : 'not-found'
       })
-      setRepositories([...filteredRepositories])
+      setRepositories(filteredRepositories)
     }
   }
 
-  const handleOnAddRepository = (newRepositoryName: string) => {
-    setNewRepository({ name: newRepositoryName, notFound: false })
-    if (newRepositoryName) {
-      getRepositoryQuery()
-    }
+  const handleOnOpenModal: RepositoryHandler = repository => {
+    setCurrentActionRepository(repository)
+    setModalVisible(true)
   }
 
   return (
