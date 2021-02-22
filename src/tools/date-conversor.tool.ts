@@ -1,5 +1,5 @@
 export const dateConversor = {
-  getLabel: (dateString: string) => {
+  getLabel: (dateString: string): string => {
     const now = Date.now()
     const date = new Date(dateString).getTime()
     const millisecondsOnDay = 86400000
